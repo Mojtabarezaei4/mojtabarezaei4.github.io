@@ -1,0 +1,20 @@
+body{
+    min-width: 100vw;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.span{
+    height: 2px;
+    margin-top: 12%;
+    width: 100%;
+    background: #528f8b;
+}
+
+.bg {
+    background: #68B0AB;
+}
