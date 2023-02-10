@@ -1,0 +1,33 @@
+.img-style {
+  max-width: 12em;
+  max-height: 16em;
+  margin-top: 5%;
+  border-radius: 30px;
+  box-shadow: 0 4px 8px 0 #878e88ff, 0 6px 20px 0 #878e88ff;
+}
+
+.product {
+  background-color: transparent;
+  box-shadow: 0 4px 8px 0 #878e88ff, 0 6px 20px 0 #878e88ff;
+}
+
+#addToCartBtn {
+  background: #96c0b7;
+  border: 0;
+}
+.ingredients-btn {
+  background: #f08cae;
+}
+
+#modal-content {
+  background: #96c0b7;
+}
+
+#close-btn {
+  background: #725752;
+}
+
+.custom-modal-dialog {
+  margin: 2em;
+  width: 90%;
+}

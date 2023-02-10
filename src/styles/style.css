@@ -1,0 +1,26 @@
+@font-face {
+  font-family: rubrics;
+  src: url(./font/Posterman_PERSONAL_USE_ONLY.otf);
+}
+
+#cart-ul {
+  width: 400px;
+  background: #96c0b7;
+}
+
+h3 {
+  color: #878e88;
+}
+h2 {
+  margin-top: 1em;
+}
+
+h1,
+header h3 {
+  font-family: rubrics;
+  color: #96c0b7;
+}
+
+#svg {
+  color: #96c0b7;
+}
