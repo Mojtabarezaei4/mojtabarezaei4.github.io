@@ -1,0 +1,19 @@
+:root {
+  --ground: #0f1318;
+  --panel: #171c23;
+  --border: #2a313b;
+  --text: #ede8df;
+  --text-2: #c9c3b8;
+  --muted: #9aa3ae;
+  --accent: #ffb24d;
+  --court: #2e5e8e;
+  --court-front: #336898;
+  --free: #1e3a57;
+  --f-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --f-body: 'Barlow', system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--ground); color: var(--text); font-family: var(--f-body); }
+button { font-family: inherit; cursor: pointer; }
+a { color: var(--accent); }

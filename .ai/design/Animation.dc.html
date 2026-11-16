@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Volleyrot – rotation player</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&amp;family=Barlow:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0F1318}
+a{color:#FFB24D}a:hover{color:#FFD08A}
+button{font-family:inherit;cursor:pointer}
+input[type=range]{accent-color:#FFB24D}
+input[type=checkbox]{accent-color:#C4A1FF}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #0F1318; color: #EDE8DF; font-family: 'Barlow', sans-serif; box-sizing: border-box; padding: 24px clamp(16px, 3vw, 40px) 40px">
+<div style="max-width: 1360px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px">
+
+<header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; color: #EDE8DF; text-decoration: none" aria-label="Back to system picker">
+<svg width="28" height="28" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="14" fill="none" stroke="#EDE8DF" stroke-width="2.5"></circle><path d="M17 3 C 24 10, 24 24, 17 31 M4 12 C 12 15, 22 15, 30 12 M4 22 C 12 19, 22 19, 30 22" fill="none" stroke="#EDE8DF" stroke-width="2"></path></svg>
+<span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: .08em">VOLLEYROT</span>
+</a>
+<div style="display: flex; gap: 6px" role="group" aria-label="System">
+<sc-for list="{{systems}}" as="c" hint-placeholder-count="4">
+<button type="button" onClick="{{c.pick}}" aria-pressed="{{c.on}}" style="min-width: 56px; height: 44px; padding: 0 12px; border-radius: 4px; border: 1px solid; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 20px; {{c.css}}">{{c.label}}</button>
+</sc-for>
+</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 18px; background: #171C23; border: 1px solid #2A313B; border-radius: 6px; padding: 8px 18px 8px 14px">
+<div style="display: flex; flex-direction: column; align-items: flex-start">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; color: #9AA3AE">ROTATION</span>
+<div style="display: flex; align-items: baseline; gap: 6px"><span style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 44px; line-height: 1; color: #FFB24D">{{rotNum}}</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 20px; color: #9AA3AE">/ 6</span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; gap: 4px" role="group" aria-label="Jump to rotation">
+<sc-for list="{{pips}}" as="q" hint-placeholder-count="6">
+<button type="button" onClick="{{q.pick}}" aria-label="Rotation {{q.n}}" style="width: 30px; height: 30px; border-radius: 3px; border: 1px solid #2A313B; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; {{q.css}}">{{q.n}}</button>
+</sc-for>
+</div>
+<span style="font-size: 13px; color: #C9C3B8">{{setterLine}}</span>
+</div>
+</div>
+
+<div style="display: flex; gap: 4px; background: #171C23; border: 1px solid #2A313B; border-radius: 6px; padding: 4px" role="group" aria-label="Phase">
+<sc-for list="{{phases}}" as="f" hint-placeholder-count="3">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.on}}" style="height: 40px; padding: 0 16px; border-radius: 4px; border: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: .06em; text-transform: uppercase; {{f.css}}">{{f.label}}</button>
+</sc-for>
+</div>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+
+<main style="flex: 999 1 620px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<div style="position: relative; width: 100%; aspect-ratio: 1000 / 860; background: #0B0E12; border-radius: 6px; overflow: hidden; border: 1px solid #2A313B">
+<svg viewBox="0 0 1000 860" style="position: absolute; inset: 0; width: 100%; height: 100%" role="img" aria-label="Your half of the court seen from behind your end line, net at the top">
+<defs>
+<marker id="arw" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1 L9 5 L1 9 z" fill="#FFB24D"></path></marker>
+<linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B0E12"></stop><stop offset="1" stop-color="#121821"></stop></linearGradient>
+</defs>
+<rect x="0" y="0" width="1000" height="860" fill="url(#fade)"></rect>
+<text x="500" y="70" text-anchor="middle" fill="#8A949F" style="font: 600 14px 'JetBrains Mono', monospace; letter-spacing: .2em">OPPONENT SIDE · NOT SHOWN</text>
+<polygon points="{{g.free}}" fill="#1E3A57"></polygon>
+<polygon points="{{g.court}}" fill="#2E5E8E"></polygon>
+<polygon points="{{g.front}}" fill="#336898"></polygon>
+<line x1="{{g.v1.x1}}" y1="{{g.v1.y1}}" x2="{{g.v1.x2}}" y2="{{g.v1.y2}}" stroke="rgba(237,232,223,.3)" stroke-width="2" stroke-dasharray="8 8"></line>
+<line x1="{{g.v2.x1}}" y1="{{g.v2.y1}}" x2="{{g.v2.x2}}" y2="{{g.v2.y2}}" stroke="rgba(237,232,223,.3)" stroke-width="2" stroke-dasharray="8 8"></line>
+<line x1="{{g.al.x1}}" y1="{{g.al.y1}}" x2="{{g.al.x2}}" y2="{{g.al.y2}}" stroke="#EDE8DF" stroke-width="4"></line>
+<line x1="{{g.alL.x1}}" y1="{{g.alL.y1}}" x2="{{g.alL.x2}}" y2="{{g.alL.y2}}" stroke="#EDE8DF" stroke-width="3" stroke-dasharray="10 9"></line>
+<line x1="{{g.alR.x1}}" y1="{{g.alR.y1}}" x2="{{g.alR.x2}}" y2="{{g.alR.y2}}" stroke="#EDE8DF" stroke-width="3" stroke-dasharray="10 9"></line>
+<polygon points="{{g.court}}" fill="none" stroke="#EDE8DF" stroke-width="5" stroke-linejoin="round"></polygon>
+<text transform="translate({{g.n4.x}} {{g.n4.y}}) scale(1 .55)" fill="rgba(237,232,223,.42)" style="font: 800 {{g.n4.fs}}px 'Barlow Condensed', sans-serif">4</text>
+<text transform="translate({{g.n3.x}} {{g.n3.y}}) scale(1 .55)" fill="rgba(237,232,223,.42)" style="font: 800 {{g.n3.fs}}px 'Barlow Condensed', sans-serif">3</text>
+<text transform="translate({{g.n2.x}} {{g.n2.y}}) scale(1 .55)" fill="rgba(237,232,223,.42)" style="font: 800 {{g.n2.fs}}px 'Barlow Condensed', sans-serif">2</text>
+<text transform="translate({{g.n5.x}} {{g.n5.y}}) scale(1 .55)" fill="rgba(237,232,223,.42)" style="font: 800 {{g.n5.fs}}px 'Barlow Condensed', sans-serif">5</text>
+<text transform="translate({{g.n6.x}} {{g.n6.y}}) scale(1 .55)" fill="rgba(237,232,223,.42)" style="font: 800 {{g.n6.fs}}px 'Barlow Condensed', sans-serif">6</text>
+<text transform="translate({{g.n1.x}} {{g.n1.y}}) scale(1 .55)" fill="rgba(255,178,77,.75)" style="font: 800 {{g.n1.fs}}px 'Barlow Condensed', sans-serif">1</text>
+<sc-if value="{{showBand}}" hint-placeholder-val="{{false}}">
+<polygon points="{{g.band}}" fill="rgba(92,225,230,.13)" stroke="#5CE1E6" stroke-opacity=".6" stroke-width="2" stroke-dasharray="6 8"></polygon>
+<text x="{{g.bandLbl.x}}" y="{{g.bandLbl.y}}" fill="#5CE1E6" style="font: 700 13px 'JetBrains Mono', monospace; letter-spacing: .18em">PASSING LINE</text>
+<text x="500" y="104" text-anchor="middle" fill="#FFB24D" style="font: 700 15px 'JetBrains Mono', monospace; letter-spacing: .2em">↓ OPPONENT SERVES ↓</text>
+</sc-if>
+<sc-if value="{{showDefense}}" hint-placeholder-val="{{false}}">
+<marker id="arwR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1 L9 5 L1 9 z" fill="#FF6F59"></path></marker>
+<line x1="{{atkG.l.x1}}" y1="{{atkG.l.y1}}" x2="{{atkG.l.x2}}" y2="{{atkG.l.y2}}" stroke="#FF6F59" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arwR)" opacity=".85"></line>
+<line x1="{{atkG.c.x1}}" y1="{{atkG.c.y1}}" x2="{{atkG.c.x2}}" y2="{{atkG.c.y2}}" stroke="#FF6F59" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arwR)" opacity=".85"></line>
+<circle cx="{{atkG.bx}}" cy="{{atkG.by}}" r="11" fill="#EDE8DF" stroke="#FF6F59" stroke-width="3"></circle>
+<text x="{{atkG.bx}}" y="{{atkG.by}}" dy="-20" text-anchor="middle" fill="#FF6F59" style="font: 700 14px 'JetBrains Mono', monospace; letter-spacing: .18em">ATTACK</text>
+</sc-if>
+<sc-if value="{{showPath}}" hint-placeholder-val="{{true}}">
+<path d="{{g.loop}}" fill="none" stroke="#FFB24D" stroke-opacity=".55" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round" marker-mid="url(#arw)"></path>
+</sc-if>
+<polygon points="{{g.netShadow}}" fill="rgba(0,0,0,.28)"></polygon>
+<line x1="{{g.postL.x1}}" y1="{{g.postL.y1}}" x2="{{g.postL.x2}}" y2="{{g.postL.y2}}" stroke="#9AA3AE" stroke-width="7" stroke-linecap="round"></line>
+<line x1="{{g.postR.x1}}" y1="{{g.postR.y1}}" x2="{{g.postR.x2}}" y2="{{g.postR.y2}}" stroke="#9AA3AE" stroke-width="7" stroke-linecap="round"></line>
+<polygon points="{{g.net}}" fill="rgba(15,19,24,.55)"></polygon>
+<path d="{{g.mesh}}" stroke="rgba(237,232,223,.28)" stroke-width="1"></path>
+<line x1="{{g.tape.x1}}" y1="{{g.tape.y1}}" x2="{{g.tape.x2}}" y2="{{g.tape.y2}}" stroke="#EDE8DF" stroke-width="5"></line>
+<line x1="{{g.btape.x1}}" y1="{{g.btape.y1}}" x2="{{g.btape.x2}}" y2="{{g.btape.y2}}" stroke="#EDE8DF" stroke-width="2"></line>
+<line x1="{{g.antL.x1}}" y1="{{g.antL.y1}}" x2="{{g.antL.x2}}" y2="{{g.antL.y2}}" stroke="#E63946" stroke-width="4" stroke-dasharray="7 7"></line>
+<line x1="{{g.antL.x1}}" y1="{{g.antL.y1}}" x2="{{g.antL.x2}}" y2="{{g.antL.y2}}" stroke="#EDE8DF" stroke-width="4" stroke-dasharray="7 7" stroke-dashoffset="7"></line>
+<line x1="{{g.antR.x1}}" y1="{{g.antR.y1}}" x2="{{g.antR.x2}}" y2="{{g.antR.y2}}" stroke="#E63946" stroke-width="4" stroke-dasharray="7 7"></line>
+<line x1="{{g.antR.x1}}" y1="{{g.antR.y1}}" x2="{{g.antR.x2}}" y2="{{g.antR.y2}}" stroke="#EDE8DF" stroke-width="4" stroke-dasharray="7 7" stroke-dashoffset="7"></line>
+<text x="{{g.endLbl.x}}" y="{{g.endLbl.y}}" text-anchor="middle" fill="#9AA3AE" style="font: 600 13px 'JetBrains Mono', monospace; letter-spacing: .2em">YOUR END LINE</text>
+</svg>
+
+<div style="position: absolute; inset: 0">
+<sc-if value="{{showGhosts}}" hint-placeholder-val="{{false}}">
+<sc-for list="{{ghosts}}" as="h" hint-placeholder-count="6">
+<div style="position: absolute; left: {{h.left}}%; top: {{h.top}}%; transform: translate(-50%, -50%) scale(1, .5); width: 54px; height: 54px; border-radius: 50%; border: 3px dashed {{h.color}}; opacity: .7"></div>
+</sc-for>
+</sc-if>
+<sc-for list="{{players}}" as="p" hint-placeholder-count="6">
+<div style="position: absolute; left: {{p.left}}%; top: {{p.top}}%; z-index: {{p.z}}; width: 0; height: 0; transition: left {{p.dur}}ms cubic-bezier(.65,0,.35,1), top {{p.dur}}ms cubic-bezier(.65,0,.35,1)">
+<div style="position: absolute; left: 0; top: 0; transform: translate(-50%, -100%) scale({{p.sc}}); transform-origin: 50% 100%; transition: transform {{p.dur}}ms cubic-bezier(.65,0,.35,1); display: flex; flex-direction: column; align-items: center">
+<sc-if value="{{p.hasTag}}" hint-placeholder-val="{{false}}">
+<span style="margin-bottom: 6px; padding: 3px 7px; border-radius: 3px; background: #0F1318; color: {{p.tagColor}}; border: 1px solid {{p.tagColor}}; font: 700 12px/1 'JetBrains Mono', monospace; letter-spacing: .1em; white-space: nowrap">{{p.tag}}</span>
+</sc-if>
+<div style="width: 60px; height: 60px; border-radius: 50%; background: {{p.color}}; border: 3px solid #0F1318; box-shadow: 0 0 0 2px rgba(237,232,223,.9), 0 12px 16px rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; font: 800 20px/1 'Barlow Condensed', sans-serif; color: #0F1318; letter-spacing: .02em; box-sizing: border-box">{{p.code}}</div>
+<div style="width: 3px; height: 18px; background: rgba(237,232,223,.85)"></div>
+<div style="width: 38px; height: 11px; border-radius: 50%; background: rgba(0,0,0,.5); margin-top: -6px"></div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; background: #171C23; border: 1px solid #2A313B; border-radius: 6px; padding: 12px 16px">
+<div style="display: flex; gap: 6px">
+<button type="button" onClick="{{prev}}" aria-label="Previous rotation" style="width: 48px; height: 48px; border-radius: 4px; border: 1px solid #2A313B; background: transparent; color: #EDE8DF; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 5 L9 12 L19 19 Z"></path><path d="M5 5 V19"></path></svg></button>
+<button type="button" onClick="{{toggle}}" aria-label="{{playLabel}}" style="height: 48px; padding: 0 20px; border-radius: 4px; border: 0; background: #FFB24D; color: #0F1318; display: flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 19px; letter-spacing: .08em; min-width: 124px; justify-content: center">
+<sc-if value="{{playing}}" hint-placeholder-val="{{true}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14"></rect><rect x="14" y="5" width="4" height="14"></rect></svg></sc-if>
+<sc-if value="{{paused}}" hint-placeholder-val="{{false}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4 L20 12 L7 20 Z"></path></svg></sc-if>
+<span>{{playText}}</span>
+</button>
+<button type="button" onClick="{{next}}" aria-label="Next rotation" style="width: 48px; height: 48px; border-radius: 4px; border: 1px solid #2A313B; background: transparent; color: #EDE8DF; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5 L15 12 L5 19 Z"></path><path d="M19 5 V19"></path></svg></button>
+</div>
+
+<div style="flex: 1 1 260px; display: flex; align-items: center; gap: 14px">
+<label for="spd" style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .12em; color: #9AA3AE">SPEED</label>
+<span style="font-size: 13px; color: #9AA3AE">slow</span>
+<input id="spd" type="range" min="0.25" max="2" step="0.25" value="{{speed}}" onChange="{{onSpeed}}" style="flex: 1; min-width: 120px; height: 28px">
+<span style="font-size: 13px; color: #9AA3AE">fast</span>
+<span style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 18px; color: #FFB24D; min-width: 56px; text-align: right">{{speedLabel}}</span>
+</div>
+
+<sc-if value="{{showDefense}}" hint-placeholder-val="{{false}}">
+<div style="display: flex; align-items: center; gap: 8px" role="group" aria-label="Attack from">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .12em; color: #9AA3AE">ATTACK FROM</span>
+<sc-for list="{{attacks}}" as="a" hint-placeholder-count="3">
+<button type="button" onClick="{{a.pick}}" aria-pressed="{{a.on}}" style="height: 44px; padding: 0 14px; border-radius: 4px; border: 1px solid; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: .06em; text-transform: uppercase; {{a.css}}">{{a.label}}</button>
+</sc-for>
+</div>
+</sc-if>
+<label style="display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; cursor: pointer">
+<input type="checkbox" checked="{{libero}}" onChange="{{onLibero}}" style="width: 20px; height: 20px">
+<span>Libero in for back-row middle</span>
+</label>
+</div>
+</main>
+
+<aside style="flex: 1 1 300px; display: flex; flex-direction: column; gap: 16px">
+<section style="background: #171C23; border: 1px solid #2A313B; border-radius: 6px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: .08em; text-transform: uppercase">{{phaseTitle}}</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #C9C3B8">{{phaseText}}</p>
+</section>
+
+<section style="background: #171C23; border: 1px solid #2A313B; border-radius: 6px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: .08em; text-transform: uppercase">Who's who</h2>
+<sc-for list="{{legend}}" as="r" hint-placeholder-count="5">
+<div style="display: flex; gap: 12px; align-items: flex-start">
+<span style="flex: none; width: 42px; height: 42px; border-radius: 50%; background: {{r.color}}; border: 2px solid #0F1318; box-shadow: 0 0 0 1.5px rgba(237,232,223,.6); display: flex; align-items: center; justify-content: center; font: 800 15px/1 'Barlow Condensed', sans-serif; color: #0F1318">{{r.code}}</span>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-weight: 600; font-size: 16px">{{r.name}}</span>
+<span style="font-size: 14px; line-height: 1.4; color: #9AA3AE">{{r.job}}</span>
+</div>
+</div>
+</sc-for>
+</section>
+
+<section style="background: #171C23; border: 1px solid #2A313B; border-radius: 6px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: .08em; text-transform: uppercase">In this rotation</h2>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; color: #9AA3AE">FRONT ROW · 4 3 2</span>
+<div style="display: flex; gap: 6px">
+<sc-for list="{{frontRow}}" as="m" hint-placeholder-count="3">
+<span style="flex: 1; text-align: center; padding: 8px 0; border-radius: 3px; background: {{m.color}}; color: #0F1318; font: 800 17px/1 'Barlow Condensed', sans-serif">{{m.code}}</span>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; color: #9AA3AE">BACK ROW · 5 6 1</span>
+<div style="display: flex; gap: 6px">
+<sc-for list="{{backRow}}" as="m" hint-placeholder-count="3">
+<span style="flex: 1; text-align: center; padding: 8px 0; border-radius: 3px; background: {{m.color}}; color: #0F1318; font: 800 17px/1 'Barlow Condensed', sans-serif">{{m.code}}</span>
+</sc-for>
+</div>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: #C9C3B8">{{serverLine}}</p>
+</section>
+</aside>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"startSystem":{"editor":"enum","options":["5-1","6-2","4-2","6-6"],"default":"5-1"},"startPhase":{"editor":"enum","options":["lineup","serve","receive","switch","defense"],"default":"lineup"},"showPath":{"editor":"boolean","default":true},"$preview":{"width":1440,"height":1000}}'>
+var F = 1322, CAM = 26, H = 15.4, HY = -592;
+function P(x, d, z) { z = z || 0; var s = F / (CAM - d); return { x: 500 + (x - 4.5) * s, y: HY + (H - z) * s, s: s }; }
+function pts(a) { return a.map(function (q) { var p = P(q[0], q[1], q[2]); return p.x.toFixed(1) + ',' + p.y.toFixed(1); }).join(' '); }
+function seg(x1, d1, z1, x2, d2, z2) { var a = P(x1, d1, z1), b = P(x2, d2, z2); return { x1: a.x.toFixed(1), y1: a.y.toFixed(1), x2: b.x.toFixed(1), y2: b.y.toFixed(1) }; }
+function num(x, d) { var p = P(x, d); return { x: p.x.toFixed(1), y: p.y.toFixed(1), fs: (p.s * 0.95).toFixed(0) }; }
+
+var ROLE = {
+  S: { name: 'Setter', color: '#FFD84D', job: 'Takes the second touch and sets up the attack.' },
+  OH: { name: 'Outside Hitter', color: '#5CE1E6', job: 'Attacks from the left. Main serve-receive passer.' },
+  MB: { name: 'Middle Blocker', color: '#A3E635', job: 'Blocks at the net, hits fast middle sets.' },
+  OPP: { name: 'Opposite', color: '#FF6F59', job: 'Attacks from the right. Always across from the setter.' },
+  L: { name: 'Libero', color: '#C4A1FF', job: 'Back-row defender in a different jersey. Swaps in for a middle.' },
+  P: { name: 'Player', color: '#E6E1D6', job: 'All-rounder: passes, sets and hits as they rotate.' }
+};
+var SYS = {
+  '5-1': { start: { 1: 'S', 2: 'OH1', 3: 'MB1', 4: 'OPP', 5: 'OH2', 6: 'MB2' }, roles: ['S', 'OH', 'MB', 'OPP', 'L'] },
+  '6-2': { start: { 1: 'S1', 2: 'OH1', 3: 'MB1', 4: 'S2', 5: 'OH2', 6: 'MB2' }, roles: ['S', 'OH', 'MB', 'L'] },
+  '4-2': { start: { 1: 'S1', 2: 'OH1', 3: 'MB1', 4: 'S2', 5: 'OH2', 6: 'MB2' }, roles: ['S', 'OH', 'MB', 'L'] },
+  '6-6': { start: { 1: 'P1', 2: 'P2', 3: 'P3', 4: 'P4', 5: 'P5', 6: 'P6' }, roles: ['P', 'S'] }
+};
+var BASE = { 4: [1.5, 2.0], 3: [4.5, 2.0], 2: [7.5, 2.0], 5: [1.5, 6.4], 6: [4.5, 6.4], 1: [7.5, 6.4] };
+var SERVE = [7.6, 10.5];
+var SPOT = { FL: [1.1, 1.5], FM: [4.5, 1.1], FR: [7.9, 1.5], SET: [6.1, 0.9], BL: [1.8, 6.9], BM: [4.5, 7.7], BR: [7.2, 6.9] };
+var DEF = {
+  right: { FR: [7.5, 0.4, 'BLOCK'], FM: [6.5, 0.4, 'BLOCK'], FL: [1.4, 3.4, 'TIP'], BL: [1.1, 6.6, 'CROSS'], BM: [4.5, 8.4, 'DEEP'], BR: [8.3, 6.2, 'LINE'] },
+  middle: { FM: [4.5, 0.4, 'BLOCK'], FL: [1.4, 3.2, 'TIP'], FR: [7.6, 3.2, 'TIP'], BL: [1.2, 6.8, 'DIG'], BM: [4.5, 8.4, 'DEEP'], BR: [7.8, 6.8, 'DIG'] },
+  left: { FL: [1.5, 0.4, 'BLOCK'], FM: [2.5, 0.4, 'BLOCK'], FR: [7.6, 3.4, 'TIP'], BR: [7.9, 6.6, 'CROSS'], BM: [4.5, 8.4, 'DEEP'], BL: [0.7, 6.2, 'LINE'] }
+};
+var TAGC = { BLOCK: '#FF6F59', TIP: '#EDE8DF', LINE: '#5CE1E6', CROSS: '#5CE1E6', DIG: '#5CE1E6', DEEP: '#C4A1FF' };
+function slotOf(key, role, front, zone) {
+  if (key === '6-6') return { 4: 'FL', 3: 'FM', 2: 'FR', 5: 'BL', 6: 'BM', 1: 'BR' }[zone];
+  if (role === 'OH') return front ? 'FL' : 'BL';
+  if (role === 'MB') return front ? 'FM' : 'BM';
+  return front ? 'FR' : 'BR';
+}
+var PHASE_TXT = {
+  defense: ['Defense', 'The other team attacks. The front-row players on that side jump to block. Everyone else spreads around the block: one covers short tips, one digs down the line, one digs cross-court and one covers deep. This setup is called perimeter defense.'],
+  lineup: ['Rotational order', 'Where everyone must stand at the moment of the serve. Each player has to stay in order with their neighbours — this is the overlap rule.'],
+  serve: ['We serve', 'The player who rotated into zone 1 steps behind the end line and serves. Everyone else holds their spot until the ball is hit.'],
+  receive: ['Serve receive', 'The other team serves. Three players form a passing line: both outside hitters and the libero. Everyone else gets out of the way, stacked at the net or tucked behind a teammate, but still in rotational order. Dashed rings show each player’s official zone.'],
+  'switch': ['Switch to base', 'Once the serve is hit, players run to their specialist spots: hitters to their side, middles to the middle, the setter to the target. Dashed rings show where they started.']
+};
+
+function rotZone(z, k) { for (var i = 0; i < k; i++) z = (z === 1) ? 6 : z - 1; return z; }
+function receive(key, k) {
+  var sys = SYS[key];
+  var info = [1, 2, 3, 4, 5, 6].map(function (z0) { var role = sys.start[z0].replace(/[0-9]/g, ''), zone = rotZone(z0, k); return { z0: z0, role: role, zone: zone, front: zone >= 2 && zone <= 4 }; });
+  var out = {}, pass = {}, byZ = {};
+  info.forEach(function (p) { byZ[p.zone] = p; });
+  if (key === '6-6') {
+    var W = { 3: [4.5, 1.0], 4: [1.4, 4.2], 2: [7.6, 4.2], 6: [4.5, 5.8], 5: [1.8, 7.6], 1: [7.2, 7.6] };
+    info.forEach(function (p) { out[p.z0] = W[p.zone].slice(); if (p.zone !== 3) pass[p.z0] = true; });
+    return { spot: out, pass: pass };
+  }
+  var col = { 4: 0, 5: 0, 3: 1, 6: 1, 2: 2, 1: 2 }, SX = [1.8, 4.5, 7.2], NET = { 4: 1.3, 3: 4.5, 2: 7.7 }, DEEP = { 5: 1.4, 6: 4.5, 1: 7.8 }, partner = { 1: 2, 6: 3, 5: 4 };
+  var ps = info.filter(function (p) { return p.role === 'OH' || (p.role === 'MB' && !p.front); });
+  ps.sort(function (a, b) { return (col[a.zone] - col[b.zone]) || ((a.front ? 1 : 0) - (b.front ? 1 : 0)); });
+  ps.forEach(function (p, i) { out[p.z0] = [SX[i], p.front ? 5.4 : 6.4]; pass[p.z0] = true; });
+  info.forEach(function (p) { if (!out[p.z0] && p.front) out[p.z0] = [NET[p.zone], 1.0]; });
+  info.forEach(function (p) {
+    if (out[p.z0]) return;
+    var sets = p.role === 'S' && (key === '5-1' || key === '6-2');
+    if (sets) { var cd = out[byZ[partner[p.zone]].z0][1]; out[p.z0] = [DEEP[p.zone], Math.min(cd + 0.8, 8.2)]; }
+    else out[p.z0] = [DEEP[p.zone], 8.0];
+  });
+  [[4, 3, 2], [5, 6, 1]].forEach(function (row) {
+    for (var i = 1; i < 3; i++) { var a = out[byZ[row[i - 1]].z0], b = out[byZ[row[i]].z0]; if (b[0] < a[0] + 0.6) out[byZ[row[i]].z0] = [a[0] + 0.6, b[1]]; }
+  });
+  [[4, 5], [3, 6], [2, 1]].forEach(function (pr) {
+    var f = out[byZ[pr[0]].z0], b = out[byZ[pr[1]].z0];
+    if (b[1] < f[1] + 0.6) out[byZ[pr[1]].z0] = [b[0], f[1] + 0.6];
+  });
+  return { spot: out, pass: pass };
+}
+function geometry() {
+  var mesh = '';
+  for (var x = 0; x <= 9.001; x += 0.5) { var a = P(x, 0, 2.43), b = P(x, 0, 1.43); mesh += 'M' + a.x.toFixed(1) + ' ' + a.y.toFixed(1) + 'L' + b.x.toFixed(1) + ' ' + b.y.toFixed(1); }
+  [1.68, 1.93, 2.18].forEach(function (z) { var a = P(0, 0, z), b = P(9, 0, z); mesh += 'M' + a.x.toFixed(1) + ' ' + a.y.toFixed(1) + 'L' + b.x.toFixed(1) + ' ' + b.y.toFixed(1); });
+  var ring = [[6.5, 3.0], [6.5, 4.4], [6.5, 5.7], [4.5, 5.7], [2.5, 5.7], [2.5, 4.4], [2.5, 3.0], [4.5, 3.0]];
+  var loop = ring.map(function (q, i) { var p = P(q[0], q[1]); return (i ? 'L' : 'M') + p.x.toFixed(1) + ' ' + p.y.toFixed(1); }).join(' ') + ' Z';
+  var e = P(4.5, 11.4);
+  return {
+    free: pts([[-3, 0], [12, 0], [12, 13], [-3, 13]]),
+    court: pts([[0, 0], [9, 0], [9, 9], [0, 9]]),
+    front: pts([[0, 0], [9, 0], [9, 3], [0, 3]]),
+    v1: seg(3, 0, 0, 3, 9, 0), v2: seg(6, 0, 0, 6, 9, 0),
+    al: seg(0, 3, 0, 9, 3, 0), alL: seg(-1.75, 3, 0, 0, 3, 0), alR: seg(9, 3, 0, 10.75, 3, 0),
+    n4: num(0.35, 2.75), n3: num(3.35, 2.75), n2: num(6.35, 2.75),
+    n5: num(0.35, 8.65), n6: num(3.35, 8.65), n1: num(6.35, 8.65),
+    loop: loop,
+    netShadow: pts([[0, 0], [9, 0], [9, 0.35], [0, 0.35]]),
+    net: pts([[0, 0, 2.43], [9, 0, 2.43], [9, 0, 1.43], [0, 0, 1.43]]),
+    mesh: mesh,
+    tape: seg(0, 0, 2.43, 9, 0, 2.43), btape: seg(0, 0, 1.43, 9, 0, 1.43),
+    postL: seg(-1, 0, 0, -1, 0, 2.55), postR: seg(10, 0, 0, 10, 0, 2.55),
+    antL: seg(0, 0, 1.43, 0, 0, 3.23), antR: seg(9, 0, 1.43, 9, 0, 3.23),
+    endLbl: { x: e.x.toFixed(1), y: e.y.toFixed(1) },
+    band: pts([[0.4, 4.6], [8.6, 4.6], [8.6, 7.2], [0.4, 7.2]]),
+    bandLbl: (function () { var p = P(0.6, 7.0); return { x: p.x.toFixed(1), y: p.y.toFixed(1) }; })(),
+    atk: (function () {
+      function a(bx, lx, ld, cx, cd) { var b = P(bx, -1.3, 3.4); return { bx: b.x.toFixed(1), by: b.y.toFixed(1), l: seg(bx, -1.3, 3.4, lx, ld, 0), c: seg(bx, -1.3, 3.4, cx, cd, 0) }; }
+      return { right: a(7.7, 8.5, 7.6, 1.3, 7.2), middle: a(4.5, 2.6, 7.9, 6.4, 7.9), left: a(1.3, 0.5, 7.6, 7.7, 7.2) };
+    })()
+  };
+}
+function pct(m) { var p = P(m[0], m[1]); return { left: (p.x / 10).toFixed(2), top: (p.y / 8.6).toFixed(2), s: p.s, y: p.y }; }
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { system: (props && props.startSystem) || '5-1', rot: 0, phase: (props && props.startPhase) || 'lineup', atk: 'right', playing: true, speed: 1, libero: true };
+    this.geo = geometry();
+  }
+  componentDidMount() { this.loop(); }
+  componentWillUnmount() { clearTimeout(this.timer); }
+  loop() {
+    var self = this;
+    var ms = 2600 / (this.state.speed || 1);
+    this.timer = setTimeout(function () { if (self.state.playing) self.step(1); self.loop(); }, ms);
+  }
+  step(dir) { this.setState(function (s) { return { rot: (s.rot + dir + 6) % 6 }; }); }
+
+  renderVals() {
+    var self = this, st = this.state, key = st.system, sys = SYS[key], k = st.rot, phase = st.phase;
+    var dur = Math.round(950 / st.speed);
+    var byZone = {};
+    var R = receive(key, k);
+    var players = [1, 2, 3, 4, 5, 6].map(function (z0) {
+      var code = sys.start[z0], role = code.replace(/[0-9]/g, ''), zone = rotZone(z0, k);
+      var front = zone >= 2 && zone <= 4, dRole = role, dCode = code, tag = '', tagColor = '#FFB24D';
+      if (key !== '6-6' && st.libero && role === 'MB' && !front && (zone !== 1 || phase === 'receive' || phase === 'switch' || phase === 'defense')) { dRole = 'L'; dCode = 'L'; }
+      var m = BASE[zone];
+      if (phase === 'serve' && zone === 1) m = SERVE;
+      if (phase === 'receive') m = R.spot[z0];
+      var dj = '';
+      if (phase === 'defense') { var ds = DEF[st.atk][slotOf(key, role, front, zone)]; m = ds; dj = ds[2]; }
+      if (phase === 'switch' && key !== '6-6') {
+        if (role === 'S') m = key === '5-1' ? SPOT.SET : key === '6-2' ? (front ? SPOT.FR : SPOT.SET) : (front ? SPOT.SET : SPOT.BR);
+        else if (role === 'OH') m = front ? SPOT.FL : SPOT.BL;
+        else if (role === 'MB') m = front ? SPOT.FM : SPOT.BM;
+        else if (role === 'OPP') m = front ? SPOT.FR : SPOT.BR;
+      }
+      var setsNow = (key === '6-6' && zone === 3) || (role === 'S' && (key === '5-1' || (key === '6-2' && !front) || (key === '4-2' && front)));
+      if (phase === 'defense') { tag = dj; tagColor = TAGC[dj]; }
+      else if (phase === 'receive') {
+        if (R.pass[z0]) { tag = 'PASS'; tagColor = '#5CE1E6'; }
+        else if (setsNow) { tag = 'SETS'; tagColor = '#FFD84D'; }
+      }
+      else if (zone === 1 && phase !== 'switch') tag = 'SERVE';
+      else if (setsNow && phase === 'switch') { tag = 'SETS'; tagColor = '#FFD84D'; }
+      var color = ROLE[dRole].color;
+      if (key === '6-6' && zone === 3) color = ROLE.S.color;
+      var q = pct(m), g = pct(BASE[zone]);
+      var item = { code: dCode, color: color, left: q.left, top: q.top, z: Math.round(q.y), sc: (q.s / 70).toFixed(3), dur: dur, tag: tag, hasTag: !!tag, tagColor: tagColor, gl: g.left, gt: g.top, zone: zone, setsNow: setsNow, passes: !!R.pass[z0], blocks: dj === 'BLOCK' };
+      byZone[zone] = item;
+      return item;
+    });
+    var ghosts = players.map(function (p) { return { left: p.gl, top: p.gt, color: p.color }; });
+    var setter = players.filter(function (p) { return p.setsNow; })[0];
+    var setterLine = key === '6-6' ? (setter.code + ' is in zone 3, so they set') : (setter.code + ' sets · in zone ' + setter.zone + (setter.zone >= 2 && setter.zone <= 4 ? ' (front row)' : ' (back row)'));
+    var on = 'background: #EDE8DF; color: #0F1318; border-color: #EDE8DF';
+    var off = 'background: transparent; color: #EDE8DF; border-color: #2A313B';
+    var pt = PHASE_TXT[phase];
+    var phaseText = (phase === 'switch' && key === '6-6') ? 'In a 6-6 nobody switches. Players stay in their zones and whoever is in zone 3 sets.' : pt[1];
+    var legend = sys.roles.filter(function (r) { return r !== 'L' || st.libero; }).map(function (r) {
+      var d = ROLE[r];
+      if (key === '6-6' && r === 'S') return { code: 'P3', color: d.color, name: 'Setter this rally', job: 'Whoever stands in zone 3 sets.' };
+      return { code: r, color: d.color, name: d.name, job: d.job };
+    });
+    return {
+      g: this.geo,
+      showPath: this.props.showPath ?? true,
+      players: players,
+      ghosts: ghosts,
+      showGhosts: phase !== 'lineup',
+      rotNum: k + 1,
+      setterLine: setterLine,
+      systems: ['5-1', '6-2', '4-2', '6-6'].map(function (s) { return { label: s, on: s === key, css: s === key ? on : off, pick: function () { self.setState({ system: s, rot: 0 }); } }; }),
+      pips: [0, 1, 2, 3, 4, 5].map(function (i) { return { n: i + 1, css: i === k ? 'background: #FFB24D; color: #0F1318; border-color: #FFB24D' : 'background: transparent; color: #9AA3AE', pick: function () { self.setState({ rot: i }); } }; }),
+      phases: [['lineup', 'Lineup'], ['serve', 'Serve'], ['receive', 'Receive'], ['switch', 'Switch'], ['defense', 'Defense']].map(function (f) { return { label: f[1], on: f[0] === phase, css: f[0] === phase ? 'background: #FFB24D; color: #0F1318' : 'background: transparent; color: #C9C3B8', pick: function () { self.setState({ phase: f[0] }); } }; }),
+      phaseTitle: pt[0],
+      phaseText: phaseText,
+      legend: legend,
+      frontRow: [4, 3, 2].map(function (z) { return { code: byZone[z].code, color: byZone[z].color }; }),
+      backRow: [5, 6, 1].map(function (z) { return { code: byZone[z].code, color: byZone[z].color }; }),
+      showBand: phase === 'receive',
+      serverLine: phase === 'defense'
+        ? 'Attack from the ' + st.atk + '. ' + players.filter(function (p) { return p.blocks; }).map(function (p) { return p.code; }).join(' + ') + ' block.'
+        : phase === 'receive'
+        ? 'Opponent serves. ' + players.filter(function (p) { return p.passes; }).map(function (p) { return p.code; }).join(', ') + ' take the pass.'
+        : byZone[1].code + ' serves from zone 1.',
+      showDefense: phase === 'defense',
+      atkG: this.geo.atk[st.atk],
+      attacks: [['left', 'Left'], ['middle', 'Middle'], ['right', 'Right']].map(function (a) { return { label: a[1], on: a[0] === st.atk, css: a[0] === st.atk ? 'background: #FF6F59; color: #0F1318; border-color: #FF6F59' : 'background: transparent; color: #EDE8DF; border-color: #2A313B', pick: function () { self.setState({ atk: a[0] }); } }; }),
+      playing: st.playing, paused: !st.playing,
+      playText: st.playing ? 'PAUSE' : 'PLAY',
+      playLabel: st.playing ? 'Pause' : 'Play',
+      prev: function () { self.step(-1); },
+      next: function () { self.step(1); },
+      toggle: function () { self.setState({ playing: !self.state.playing }); },
+      speed: st.speed,
+      speedLabel: st.speed.toFixed(2).replace(/0$/, '') + '×',
+      onSpeed: function (e) { self.setState({ speed: parseFloat(e.target.value) }); },
+      libero: st.libero,
+      onLibero: function (e) { self.setState({ libero: e.target.checked }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
