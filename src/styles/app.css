@@ -106,6 +106,18 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .picker-legend > div { display: flex; gap: 12px; align-items: flex-start; }
 .picker-legend strong { display: block; font-weight: 600; }
 
+/* ---------- pick your position ---------- */
+.token--dim { opacity: .35; }
+.token--focus .token-disc { box-shadow: 0 0 0 3px var(--accent), 0 0 18px 4px rgba(255,178,77,.55), 0 12px 16px rgba(0,0,0,.45); }
+.follow select { height: 44px; border-radius: 4px; border: 1px solid var(--border); background: var(--ground); color: var(--text); font: 600 16px var(--f-body); padding: 0 10px; }
+.job { border-color: var(--accent); }
+.job h2 { display: flex; align-items: center; gap: 8px; }
+.job-code { color: var(--ground); border-radius: 3px; padding: 2px 6px; font-size: 18px; }
+.job-path { display: flex; flex-direction: column; gap: 6px; }
+.job-path ol { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px; }
+.job-path li { flex: 1; text-align: center; padding: 8px 0; border-radius: 3px; border: 1px solid var(--border); font: 700 15px var(--f-mono); color: var(--muted); }
+.job-path li[aria-current] { background: var(--accent); border-color: var(--accent); color: var(--ground); }
+
 /* ---------- phone (≤ 640px) ---------- */
 @media (max-width: 640px) {
   .ps { padding: 12px 12px 0; gap: 10px; min-height: 100dvh; }
@@ -127,6 +139,9 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   .phase { flex: 1 0 auto; padding: 0 10px; font-size: 15px; letter-spacing: .04em; }
   .attack { order: 5; flex-wrap: nowrap; }
   .attack-btn { flex: 1; padding: 0; font-size: 15px; }
+  .follow { order: 6; padding: 10px 14px; flex-direction: row; align-items: center; gap: 10px; }
+  .follow select { flex: 1; }
+  .job { order: 6; padding: 12px 14px; }
   .phase-card { order: 6; padding: 12px 14px; gap: 6px; }
   .phase-card h2 { font-size: 17px; }
   .phase-card p { font-size: 14px; line-height: 1.45; }

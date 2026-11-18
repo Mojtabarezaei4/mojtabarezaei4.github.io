@@ -1,4 +1,5 @@
-import type { PlacedPlayer } from '../domain/place'
+import { jobNote, pathFor } from '../domain/jobs'
+import type { PlacedPlayer, Scene } from '../domain/place'
 import { ROLE_INFO, SYSTEMS } from '../domain/systems'
 import type { Phase, SystemKey, Zone } from '../domain/types'
 import { PHASE_TEXT, RECEIVE_6_6, SWITCH_6_6 } from './copy'
@@ -52,6 +53,36 @@ export function RotationInfo({ players }: { players: PlacedPlayer[] }) {
       <h2>In this rotation</h2>
       <Row zones={[4, 3, 2]} label="FRONT ROW · 4 3 2" />
       <Row zones={[5, 6, 1]} label="BACK ROW · 5 6 1" />
+    </section>
+  )
+}
+
+export function FollowPicker({ players, value, onChange }: { players: PlacedPlayer[]; value: string | null; onChange: (id: string | null) => void }) {
+  return (
+    <section className="card follow" aria-label="Pick your position">
+      <label htmlFor="follow" className="eyebrow">PICK YOUR POSITION</label>
+      <select id="follow" aria-label="Follow a player" value={value ?? ''} onChange={(e) => onChange(e.target.value || null)}>
+        <option value="">Everyone</option>
+        {players.map((p) => <option key={p.id} value={p.id}>{p.id} – {ROLE_INFO[p.role].name}</option>)}
+      </select>
+    </section>
+  )
+}
+
+export function JobCard({ player, scene }: { player: PlacedPlayer; scene: Scene }) {
+  const note = jobNote(player, scene)
+  const path = pathFor(scene.system, player.id)
+  return (
+    <section className="card job" aria-label="Your job">
+      <h2>Your job · <span className="job-code" style={{ background: ROLE_INFO[player.role].color }}>{player.id}</span></h2>
+      <span className="eyebrow">{note.title}{note.offCourt ? ' · OFF COURT' : ''}</span>
+      <p>{note.text}</p>
+      <div className="job-path">
+        <span className="eyebrow">YOUR ZONES, ROTATION BY ROTATION</span>
+        <ol>
+          {path.map((z, i) => <li key={i} aria-current={i === scene.rotation ? 'step' : undefined}>{z}</li>)}
+        </ol>
+      </div>
     </section>
   )
 }

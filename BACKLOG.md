@@ -3,7 +3,7 @@
 Status: `[x]` built (MVP, branch `mvp`) · `[~]` in progress · `[ ]` not started
 
 ## Built in the MVP
-- [x] System picker (6-6, 4-2, 6-2, 5-1) as a learning path
+- [x] System picker (6-6, 5-1, 6-2, 4-2)
 - [x] Tilted court view, our half only, net at the top
 - [x] Colour-coded tokens with short codes + full-name legend
 - [x] Rotation counter (1–6) with jump buttons
@@ -15,12 +15,12 @@ Status: `[x]` built (MVP, branch `mvp`) · `[~]` in progress · `[ ]` not starte
 
 - [x] Picker cards open the player already set to that system
 - [x] GitHub Pages deploy workflow
+- [x] Pick your position – follow one player: highlight, "your job" note per rotation/phase, zone path (2026-11-18)
 
 ## Next up
 - [ ] 5-1 serve + serve receive from the owner's chart – applied then undone 2026-11-18, waiting for owner to confirm the chart (data in `.ai/pending/chart51.ts.txt`)
 - [ ] 6-2 and 4-2 (and 6-6) serve receive from a trusted chart/source, like the 5-1
 - [ ] Quiz mode – hide labels, drag tokens to the right spot, get checked
-- [ ] Pick your position – follow one player (e.g. OH1) through all 6 rotations with a "your job here" note
 
 ## Later
 - [ ] Overlap checker – drag freely, flag illegal positions and explain which neighbours are out of order

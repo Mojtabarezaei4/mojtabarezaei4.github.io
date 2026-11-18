@@ -14,9 +14,11 @@ interface Props {
   players: PlacedPlayer[]
   durationMs: number
   showGhosts: boolean
+  /** Highlight one player and fade the rest. */
+  focusId?: string | null
 }
 
-export function Tokens({ players, durationMs, showGhosts }: Props) {
+export function Tokens({ players, durationMs, showGhosts, focusId = null }: Props) {
   const reduced = useReducedMotion()
   const ease = 'cubic-bezier(.65,0,.35,1)'
   const transition = reduced ? 'none' : `left ${durationMs}ms ${ease}, top ${durationMs}ms ${ease}`
@@ -32,7 +34,7 @@ export function Tokens({ players, durationMs, showGhosts }: Props) {
         const outer: CSSProperties = { left: `${q.left}%`, top: `${q.top}%`, zIndex: Math.round(q.y), transition }
         const inner: CSSProperties = { transform: `translate(-50%, -100%) scale(${(q.s / 70).toFixed(3)})`, transition: innerTransition }
         return (
-          <div key={p.id} data-id={p.id} className="token" style={outer}>
+          <div key={p.id} data-id={p.id} data-focus={focusId ? String(p.id === focusId) : undefined} className={`token${focusId ? (p.id === focusId ? ' token--focus' : ' token--dim') : ''}`} style={outer}>
             <div className="token-body" style={inner}>
               {p.tag && <span className="token-tag" style={{ color: TAG_COLOR[p.tag], borderColor: TAG_COLOR[p.tag] }}>{p.tag}</span>}
               <div className="token-disc" style={{ background: p.show.color }}>{p.show.code}</div>

@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
-import { expect, test } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { PlayerScreen } from '../../src/view/PlayerScreen'
 
 const counter = () => screen.getByLabelText('Current rotation')
@@ -55,4 +55,26 @@ test('system chips are ordered 6-6, 5-1, 6-2, 4-2', () => {
   render(<PlayerScreen initialSystem="5-1" />)
   const g = screen.getByRole('group', { name: 'System' })
   expect(within(g).getAllByRole('button').map((b) => b.textContent)).toEqual(['6-6', '5-1', '6-2', '4-2'])
+})
+
+describe('pick your position', () => {
+  test('following a player shows their job and path, and highlights their token', () => {
+    const { container } = render(<PlayerScreen initialSystem="5-1" />)
+    fireEvent.change(screen.getByRole('combobox', { name: 'Follow a player' }), { target: { value: 'OH1' } })
+    const card = screen.getByRole('region', { name: 'Your job' })
+    expect(within(card).getByText('OH1')).toBeInTheDocument()
+    expect(within(card).getByText('Zone 2 · front row')).toBeInTheDocument()
+    expect(within(card).getAllByRole('listitem').map((li) => li.textContent)).toEqual(['2', '1', '6', '5', '4', '3'])
+    expect(container.querySelector('[data-id="OH1"]')).toHaveAttribute('data-focus', 'true')
+    expect(container.querySelector('[data-id="S"]')).toHaveAttribute('data-focus', 'false')
+  })
+  test('everyone mode shows no job card', () => {
+    render(<PlayerScreen initialSystem="5-1" />)
+    expect(screen.queryByRole('region', { name: 'Your job' })).toBeNull()
+  })
+  test('the follow list matches the system', () => {
+    render(<PlayerScreen initialSystem="6-2" />)
+    const opts = within(screen.getByRole('combobox', { name: 'Follow a player' })).getAllByRole('option').map((o) => o.getAttribute('value'))
+    expect(opts).toEqual(['', 'S1', 'OH1', 'MB1', 'S2', 'OH2', 'MB2'])
+  })
 })

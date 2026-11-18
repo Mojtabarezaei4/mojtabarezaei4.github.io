@@ -7,7 +7,7 @@ import { useAutoplay } from '../state/useAutoplay'
 import { AttackChooser, LiberoToggle, SpeedSlider, Transport } from './Controls'
 import { Court } from './Court'
 import { PhaseTabs, RotationCounter, SystemChips } from './Header'
-import { Legend, PhaseCard, RotationInfo } from './Sidebar'
+import { FollowPicker, JobCard, Legend, PhaseCard, RotationInfo } from './Sidebar'
 import { Tokens } from './Tokens'
 
 export function setterLine(players: PlacedPlayer[], system: SystemKey): string {
@@ -30,7 +30,7 @@ export function summaryLine(players: PlacedPlayer[], phase: Phase, attack: Attac
 export function PlayerScreen({ initialSystem, onHome }: { initialSystem: SystemKey; onHome?: () => void }) {
   const [state, dispatch] = useReducer(reducer, initialSystem, initialState)
   useAutoplay(state, dispatch)
-  const { system, rotation, phase, attack, libero, playing, speed } = state
+  const { system, rotation, phase, attack, libero, playing, speed, follow } = state
   const players = useMemo(() => placePlayers({ system, rotation, phase, attack, libero }), [system, rotation, phase, attack, libero])
 
   return (
@@ -49,7 +49,7 @@ export function PlayerScreen({ initialSystem, onHome }: { initialSystem: SystemK
         <main className="ps-main">
           <div className="court-stage">
             <Court phase={phase} attack={attack} showPath />
-            <Tokens players={players} durationMs={Math.round(BASE_MOVE_MS / speed)} showGhosts={phase !== 'lineup'} />
+            <Tokens players={players} durationMs={Math.round(BASE_MOVE_MS / speed)} showGhosts={phase !== 'lineup'} focusId={follow} />
           </div>
           {phase === 'defense' && <AttackChooser value={attack} onChange={(a) => dispatch({ type: 'attack', attack: a })} />}
           <div className="controls">
@@ -59,6 +59,8 @@ export function PlayerScreen({ initialSystem, onHome }: { initialSystem: SystemK
           </div>
         </main>
         <aside className="ps-aside">
+          <FollowPicker players={players} value={follow} onChange={(id) => dispatch({ type: 'follow', id })} />
+          {follow && <JobCard player={players.find((p) => p.id === follow)!} scene={{ system, rotation, phase, attack, libero }} />}
           <PhaseCard phase={phase} system={system} summary={summaryLine(players, phase, attack)} />
           <Legend system={system} libero={libero && system !== '6-6'} />
           <RotationInfo players={players} />
