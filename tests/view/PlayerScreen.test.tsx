@@ -50,3 +50,9 @@ test('switching system keeps the phase and resets rotation', () => {
   expect(counter()).toHaveTextContent('1')
   expect(screen.getByRole('button', { name: 'Switch' })).toHaveAttribute('aria-pressed', 'true')
 })
+
+test('system chips are ordered 6-6, 5-1, 6-2, 4-2', () => {
+  render(<PlayerScreen initialSystem="5-1" />)
+  const g = screen.getByRole('group', { name: 'System' })
+  expect(within(g).getAllByRole('button').map((b) => b.textContent)).toEqual(['6-6', '5-1', '6-2', '4-2'])
+})

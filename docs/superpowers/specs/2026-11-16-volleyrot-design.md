@@ -7,7 +7,7 @@ Visual source: canvas https://claude.ai/artifact/G39uxkopfZBCyutwXixjj2 (mirror 
 A web app that teaches a beginner how volleyball rotations, serve receive, the switch and defense work, by animating one team on a tilted court.
 
 ## Screens
-1. **System picker** – learning path of four systems, in this order: 6-6 (Start here), 4-2 (Recreational), 6-2 (Intermediate), 5-1 (Most common). Each card: mini lineup, one-line explanation, "Watch it rotate →". Also a zone map (4-3-2 front, 5-6-1 back, zone 1 serves) and a "Who's who" legend. A card opens the player **already set to that system**.
+1. **System picker** – four systems, in this order (changed 2026-11-18): 6-6 (Start here), 5-1 (Most common), 6-2 (Intermediate), 4-2 (Recreational). System chips use the same order. Each card: mini lineup, one-line explanation, "Watch it rotate →". Also a zone map (4-3-2 front, 5-6-1 back, zone 1 serves) and a "Who's who" legend. A card opens the player **already set to that system**.
 2. **Rotation player** – desktop: header (brand, system chips, rotation counter with jump 1–6 and "who sets" line, phase tabs), court, control bar, sidebar (phase explanation, legend with full names, front/back row of this rotation + server/passers/blockers line).
 3. **Phone layout** of the player (≤640 px wide): header with system chips, counter row, scrolling middle (court, phase tabs, attack chooser, info card, compact legend), docked bottom controls (prev, play/pause, next, libero "L" toggle, speed slider).
 

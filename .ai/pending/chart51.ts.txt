@@ -1,0 +1,36 @@
+// NOT IN USE – 5-1 chart transcription from 2026-11-18, undone at owner's request pending confirmation.
+// Lineup it assumes: 1 S, 2 OH1, 3 MB2, 4 OPP, 5 OH2, 6 MB1; numbering by setter zone (1,6,5,4,3,2).
+import type { Spot, Zone } from './types'
+
+/**
+ * 5-1 serve and serve-receive positions, transcribed from the owner's reference chart
+ * "The 5-1 rotation system" (2026-11-18). Keyed by the setter's zone (= the chart's rotation
+ * number), then by player id. Chart labels: H1/H2 = OH1/OH2, M1/M2 = MB1/MB2, O = OPP, S = S.
+ * Converted from chart pixels: court box 117 px = 9 m wide, 113 px = 9 m deep; x left→right,
+ * d metres from the net. The server stands just behind the end line (d ≈ 9.8).
+ */
+export const CHART_5_1: Record<Zone, { serve: Record<string, Spot>; receive: Record<string, Spot> }> = {
+  1: {
+    serve: { MB2: { x: 4.5, d: 0.6 }, OPP: { x: 3.8, d: 2.0 }, OH1: { x: 5.2, d: 2.0 }, MB1: { x: 3.5, d: 4.1 }, OH2: { x: 2.8, d: 6.8 }, S: { x: 4.5, d: 9.8 } },
+    receive: { MB2: { x: 4.4, d: 1.0 }, OPP: { x: 0.7, d: 2.7 }, OH2: { x: 1.8, d: 5.3 }, MB1: { x: 4.4, d: 6.1 }, OH1: { x: 7.2, d: 5.3 }, S: { x: 8.2, d: 6.1 } },
+  },
+  6: {
+    serve: { OPP: { x: 4.5, d: 0.6 }, OH2: { x: 3.8, d: 2.0 }, MB2: { x: 5.2, d: 2.0 }, MB1: { x: 1.6, d: 4.1 }, S: { x: 7.4, d: 4.1 }, OH1: { x: 4.5, d: 9.8 } },
+    receive: { S: { x: 5.9, d: 1.0 }, OPP: { x: 7.7, d: 0.8 }, MB2: { x: 8.2, d: 2.9 }, OH2: { x: 1.7, d: 5.4 }, MB1: { x: 4.5, d: 6.1 }, OH1: { x: 7.2, d: 5.4 } },
+  },
+  5: {
+    serve: { OH2: { x: 4.5, d: 0.6 }, MB1: { x: 3.8, d: 2.0 }, OPP: { x: 5.2, d: 2.0 }, S: { x: 3.5, d: 4.1 }, OH1: { x: 4.5, d: 6.8 }, MB2: { x: 4.5, d: 9.8 } },
+    receive: { MB1: { x: 0.8, d: 1.0 }, S: { x: 3.8, d: 1.5 }, OPP: { x: 8.3, d: 2.9 }, OH2: { x: 1.8, d: 5.3 }, OH1: { x: 4.5, d: 6.1 }, MB2: { x: 7.1, d: 5.3 } },
+  },
+  4: {
+    serve: { MB1: { x: 4.5, d: 0.6 }, S: { x: 3.8, d: 2.0 }, OH2: { x: 5.2, d: 2.0 }, MB2: { x: 3.5, d: 4.1 }, OH1: { x: 2.8, d: 6.8 }, OPP: { x: 4.5, d: 9.8 } },
+    receive: { S: { x: 0.9, d: 0.7 }, MB1: { x: 1.2, d: 2.9 }, OH2: { x: 1.8, d: 5.3 }, OH1: { x: 4.5, d: 6.1 }, MB2: { x: 7.1, d: 5.3 }, OPP: { x: 8.3, d: 8.4 } },
+  },
+  3: {
+    serve: { S: { x: 4.5, d: 0.6 }, OH1: { x: 3.8, d: 2.0 }, MB1: { x: 5.2, d: 2.0 }, MB2: { x: 1.4, d: 4.1 }, OPP: { x: 7.7, d: 4.1 }, OH2: { x: 4.5, d: 9.8 } },
+    receive: { S: { x: 5.9, d: 0.9 }, MB1: { x: 8.2, d: 2.9 }, OH1: { x: 1.7, d: 5.3 }, MB2: { x: 4.5, d: 6.1 }, OH2: { x: 7.2, d: 5.3 }, OPP: { x: 6.5, d: 8.4 } },
+  },
+  2: {
+    serve: { OH1: { x: 4.5, d: 0.6 }, MB2: { x: 3.8, d: 2.0 }, S: { x: 5.2, d: 2.0 }, OPP: { x: 3.5, d: 4.1 }, OH2: { x: 4.5, d: 6.9 }, MB1: { x: 4.5, d: 9.8 } },
+    receive: { S: { x: 5.9, d: 0.9 }, MB2: { x: 0.7, d: 2.9 }, OH1: { x: 1.8, d: 5.3 }, OH2: { x: 4.4, d: 6.1 }, MB1: { x: 7.2, d: 5.3 }, OPP: { x: 3.7, d: 8.4 } },
+  },}

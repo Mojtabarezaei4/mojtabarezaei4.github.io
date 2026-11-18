@@ -1,8 +1,8 @@
 # Volleyrot – status
 
-**Phase:** MVP built and reviewed (12/12 tasks, 170 tests, final review fixes applied) → code is in this folder, not yet in git / GitHub
-**Last session:** 2026-11-16 evening (built the MVP)
-**Next step:** Owner pushes this folder to `mojtabarezaei4/mojtabarezaei4.github.io` (`main`), moves `setup/deploy.yml` to `.github/workflows/`, sets Pages source to GitHub Actions (README → Deploy). Then: deferred minors in `.ai/build-ledger.md`, then BACKLOG "Next up".
+**Phase:** Live at https://mojtabarezaei4.github.io/ ; 2026-11-18 update: system order 6-6/5-1/6-2/4-2 (5-1 chart change undone, pending confirmation)
+**Last session:** 2026-11-18 (system order; 5-1 chart applied then undone)
+**Next step:** Owner commits + pushes the 2026-11-18 changes. Owner confirms the 5-1 chart (transcription ready in `.ai/pending/chart51.ts.txt`); get sources for 6-2/4-2; deferred minors in `.ai/build-ledger.md`.
 
 ## Sources of truth (newest wins)
 
@@ -22,11 +22,14 @@
 4. `PhoneDefense.dc.html` – phone, opens on Defense (imports Phone)
 
 ## Known gaps
+- The design canvas still shows the old system order; code + spec are newer.
+- 6-2 / 4-2 / 6-6 receive is still rule-based (no external source).
 - Receive and defense spots are rule-based approximations, not hand-set per rotation (backlog).
 - Projection HY is -552 in code (spec said -592) so labels clear the net.
 - On phones the two BLOCK tags at the net can overlap slightly.
 
 ## Session log
+- 2026-11-18 – System order 6-6, 5-1, 6-2, 4-2. 5-1 chart applied, then undone at owner's request (kept in `.ai/pending/`).
 - 2026-11-16 evening – Built MVP natively from the plan (Vite 8, React 19, TS 7, Vitest 5). Deploy workflow for GitHub Pages at /volleyrot/.
 - 2026-11-16 – Designed picker, player, receive, defense, phone views on canvas. Wrote BACKLOG.md, spec, plan, CLAUDE.md, this folder.
 - Note: this folder is `.ai/` because writing to `.claude/` on the owner's PC is blocked for remote tools.

@@ -17,7 +17,8 @@ Status: `[x]` built (MVP, branch `mvp`) · `[~]` in progress · `[ ]` not starte
 - [x] GitHub Pages deploy workflow
 
 ## Next up
-- [ ] Hand-set serve-receive formations per rotation and system (replace the rule-based approximation)
+- [ ] 5-1 serve + serve receive from the owner's chart – applied then undone 2026-11-18, waiting for owner to confirm the chart (data in `.ai/pending/chart51.ts.txt`)
+- [ ] 6-2 and 4-2 (and 6-6) serve receive from a trusted chart/source, like the 5-1
 - [ ] Quiz mode – hide labels, drag tokens to the right spot, get checked
 - [ ] Pick your position – follow one player (e.g. OH1) through all 6 rotations with a "your job here" note
 

@@ -29,3 +29,9 @@ test('hash change switches screens', () => {
   })
   expect(screen.getByLabelText('Current rotation')).toBeInTheDocument()
 })
+
+test('picker cards follow the order 6-6, 5-1, 6-2, 4-2', () => {
+  render(<App />)
+  const hrefs = screen.getAllByRole('link').map((a) => a.getAttribute('href')).filter((h) => h?.startsWith('#/play'))
+  expect(hrefs).toEqual(['#/play?system=6-6', '#/play?system=5-1', '#/play?system=6-2', '#/play?system=4-2'])
+})
