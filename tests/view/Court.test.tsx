@@ -27,3 +27,8 @@ test('only one label is shown above the net at a time', () => {
   rerender(<Court phase="lineup" attack="right" showPath />)
   expect(screen.getByText('OPPONENT SIDE · NOT SHOWN')).toBeInTheDocument()
 })
+
+test('the top label is hidden during the rally (the ball flies there)', () => {
+  render(<Court phase="rally" attack="right" showPath />)
+  expect(screen.queryByText('OPPONENT SIDE · NOT SHOWN')).toBeNull()
+})

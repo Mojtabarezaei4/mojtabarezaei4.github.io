@@ -43,7 +43,7 @@ export function slotOf(p: Player, system: SystemKey): Slot {
 
 export interface FormationCtx {
   system: SystemKey
-  phase: Exclude<Phase, 'receive'>
+  phase: Exclude<Phase, 'receive' | 'rally'>
   attack: Attack
 }
 

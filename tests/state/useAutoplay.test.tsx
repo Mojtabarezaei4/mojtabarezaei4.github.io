@@ -44,3 +44,11 @@ test('unmount clears the timer', () => {
   unmount()
   expect(vi.getTimerCount()).toBe(0)
 })
+
+test('in rally mode autoplay walks steps every 1800 ms at 1×, with one timer', () => {
+  render(<Harness />)
+  act(() => api.dispatch({ type: 'phase', phase: 'rally' }))
+  act(() => vi.advanceTimersByTime(1800))
+  expect(api.state).toMatchObject({ rallyStep: 1, rotation: 0 })
+  expect(vi.getTimerCount()).toBe(1)
+})

@@ -136,7 +136,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   .court-stage { order: 3; }
   .court-stage .svg-label { font-size: 22px; }
   .phases { order: 4; overflow-x: auto; }
-  .phase { flex: 1 0 auto; padding: 0 10px; font-size: 15px; letter-spacing: .04em; }
+  .phase { flex: 1 1 auto; min-width: 0; padding: 0 6px; font-size: 13px; letter-spacing: .02em; }
   .attack { order: 5; flex-wrap: nowrap; }
   .attack-btn { flex: 1; padding: 0; font-size: 15px; }
   .follow { order: 6; padding: 10px 14px; flex-direction: row; align-items: center; gap: 10px; }
@@ -172,4 +172,23 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
   .hero { gap: 24px; }
   .hero p { font-size: 17px; }
   .zone-map { flex-basis: 100%; }
+}
+
+/* ---------- rally ---------- */
+.ball-layer { position: absolute; inset: 0; pointer-events: none; z-index: 4000; }
+.ball { position: absolute; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff 0 25%, #ffe9a8 26% 55%, #2e5e8e 56% 62%, #ffe9a8 63%); box-shadow: 0 0 0 2px var(--ground), 0 0 12px rgba(255,233,168,.6); }
+.ball-shadow { position: absolute; transform: translate(-50%, -50%); border-radius: 50%; background: rgba(0,0,0,.45); }
+.rally { display: flex; flex-direction: column; gap: 8px; }
+.rally-steps { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.rally-btn { height: 44px; padding: 0 12px; border-radius: 4px; border: 1px solid var(--border); background: transparent; color: var(--text); font: 700 16px/1 var(--f-display); letter-spacing: .05em; text-transform: uppercase; }
+.rally-btn span { font-family: var(--f-mono); font-size: 12px; color: var(--muted); margin-right: 6px; }
+.rally-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--ground); }
+.rally-btn[aria-pressed="true"] span { color: var(--ground); }
+.rally-caption { margin: 0; font-size: 16px; line-height: 1.45; color: var(--text); }
+@media (max-width: 640px) {
+  .rally { order: 5; }
+  .rally-steps { flex-wrap: nowrap; }
+  .rally-btn { flex: 1 1 0; min-width: 0; padding: 0 4px; font-size: 13px; }
+  .rally-btn span { display: none; }
+  .rally-caption { font-size: 15px; }
 }

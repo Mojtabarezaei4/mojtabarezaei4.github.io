@@ -1,8 +1,10 @@
 import { useMemo, useReducer } from 'react'
 import { placePlayers, type PlacedPlayer } from '../domain/place'
+import { RALLY_STEPS, rallyStep as rallyFrame } from '../domain/rally'
 import { setsThisRally } from '../domain/roles'
 import type { Attack, Phase, SystemKey } from '../domain/types'
-import { BASE_MOVE_MS, initialState, reducer } from '../state/reducer'
+import { BASE_MOVE_MS, initialState, reducer, RALLY_TICK_MS } from '../state/reducer'
+import { Ball as FlyingBall } from './Ball'
 import { useAutoplay } from '../state/useAutoplay'
 import { AttackChooser, LiberoToggle, SpeedSlider, Transport } from './Controls'
 import { Court } from './Court'
@@ -30,8 +32,9 @@ export function summaryLine(players: PlacedPlayer[], phase: Phase, attack: Attac
 export function PlayerScreen({ initialSystem, onHome }: { initialSystem: SystemKey; onHome?: () => void }) {
   const [state, dispatch] = useReducer(reducer, initialSystem, initialState)
   useAutoplay(state, dispatch)
-  const { system, rotation, phase, attack, libero, playing, speed, follow } = state
-  const players = useMemo(() => placePlayers({ system, rotation, phase, attack, libero }), [system, rotation, phase, attack, libero])
+  const { system, rotation, phase, attack, libero, playing, speed, follow, rallyStep } = state
+  const players = useMemo(() => placePlayers({ system, rotation, phase, attack, libero, rallyStep }), [system, rotation, phase, attack, libero, rallyStep])
+  const frame = useMemo(() => (phase === 'rally' ? rallyFrame({ system, rotation, attack, libero }, rallyStep) : null), [phase, system, rotation, attack, libero, rallyStep])
 
   return (
     <div className="ps">
@@ -50,7 +53,18 @@ export function PlayerScreen({ initialSystem, onHome }: { initialSystem: SystemK
           <div className="court-stage">
             <Court phase={phase} attack={attack} showPath />
             <Tokens players={players} durationMs={Math.round(BASE_MOVE_MS / speed)} showGhosts={phase !== 'lineup'} focusId={follow} />
+            {frame?.ball && <FlyingBall key={`${system}-${rotation}-${rallyStep}`} flight={frame.ball} durationMs={Math.round((RALLY_TICK_MS * 0.6) / speed)} />}
           </div>
+          {frame && (
+            <div className="rally">
+              <div className="rally-steps" role="group" aria-label="Rally step">
+                {RALLY_STEPS.map((st, i) => (
+                  <button key={st.key} type="button" className="rally-btn" aria-pressed={i === rallyStep} onClick={() => dispatch({ type: 'rallyStep', step: i })}><span>{i + 1}</span> {st.label}</button>
+                ))}
+              </div>
+              <p className="rally-caption" aria-live="polite">{frame.caption}</p>
+            </div>
+          )}
           {phase === 'defense' && <AttackChooser value={attack} onChange={(a) => dispatch({ type: 'attack', attack: a })} />}
           <div className="controls">
             <Transport playing={playing} onPrev={() => dispatch({ type: 'prev' })} onNext={() => dispatch({ type: 'next' })} onToggle={() => dispatch({ type: 'toggle' })} />
@@ -60,8 +74,8 @@ export function PlayerScreen({ initialSystem, onHome }: { initialSystem: SystemK
         </main>
         <aside className="ps-aside">
           <FollowPicker players={players} value={follow} onChange={(id) => dispatch({ type: 'follow', id })} />
-          {follow && <JobCard player={players.find((p) => p.id === follow)!} scene={{ system, rotation, phase, attack, libero }} />}
-          <PhaseCard phase={phase} system={system} summary={summaryLine(players, phase, attack)} />
+          {follow && <JobCard player={players.find((p) => p.id === follow)!} scene={{ system, rotation, phase, attack, libero, rallyStep }} />}
+          <PhaseCard phase={phase} system={system} summary={frame ? `Step ${rallyStep + 1} of ${RALLY_STEPS.length} · ${RALLY_STEPS[rallyStep].label}` : summaryLine(players, phase, attack)} />
           <Legend system={system} libero={libero && system !== '6-6'} />
           <RotationInfo players={players} />
         </aside>

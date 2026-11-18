@@ -16,6 +16,7 @@ Status: `[x]` built (MVP, branch `mvp`) · `[~]` in progress · `[ ]` not starte
 - [x] Picker cards open the player already set to that system
 - [x] GitHub Pages deploy workflow
 - [x] Pick your position – follow one player: highlight, "your job" note per rotation/phase, zone path (2026-11-18)
+- [x] Rally playback – Rally view: serve → pass → set → attack → base, ball in an arc, step buttons, autoplay walks steps then rotates (2026-11-18)
 
 ## Next up
 - [ ] 5-1 serve + serve receive from the owner's chart – applied then undone 2026-11-18, waiting for owner to confirm the chart (data in `.ai/pending/chart51.ts.txt`)
@@ -24,7 +25,6 @@ Status: `[x]` built (MVP, branch `mvp`) · `[~]` in progress · `[ ]` not starte
 
 ## Later
 - [ ] Overlap checker – drag freely, flag illegal positions and explain which neighbours are out of order
-- [ ] Rally playback – serve → pass → set → attack → transition, with the ball
 - [ ] More defenses – rotational defense, middle-up, single vs. double block
 - [ ] Formation editor – let a coach adjust spots and save a team playbook
 - [ ] Rules cards – libero, back-row attack, overlap, substitutions, linked to the moment they apply

@@ -51,6 +51,16 @@ export function jobNote(p: PlacedPlayer, s: Scene): JobNote {
       if (p.tag === 'SETS') return { title, offCourt: false, text: sixSix ? 'In a 6-6 nobody switches. You are in zone 3, so you set.' : 'Run to the target near the net and set the second ball.' }
       if (sixSix) return { title, offCourt: false, text: 'In a 6-6 nobody switches. Play the ball from your own zone.' }
       return { title, offCourt: false, text: `Move to the ${SIDE[slotName(p)]} – your specialist spot${p.front ? ', where you attack from' : ', where you defend'}.` }
+    case 'rally': {
+      const r: Record<string, string> = {
+        PASS: 'You take the serve: pass it high to the setter’s target near the net.',
+        SETS: 'You set: get under the ball at the target and set your hitter.',
+        ATTACK: 'You attack: approach, jump and hit the ball over the net.',
+        COVER: 'You cover your hitter: get low close to them in case the ball is blocked back.',
+      }
+      if (p.tag && r[p.tag]) return { title, offCourt: false, text: r[p.tag] }
+      return { title, offCourt: false, text: s.rallyStep === 4 ? 'Get back to your base spot, ready to defend.' : 'Follow the ball and move to where you can help: approach if you are in the front row, cover if you are in the back.' }
+    }
     case 'defense': {
       const t: Record<string, string> = {
         BLOCK: 'Jump and block at the net with your partner.',

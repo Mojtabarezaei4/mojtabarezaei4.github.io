@@ -1,4 +1,5 @@
 import { BASE, spotFor } from './formations'
+import { rallyStep } from './rally'
 import { receiveSpots } from './receive'
 import { displayRole, setsThisRally } from './roles'
 import { playersAt } from './rotation'
@@ -18,10 +19,13 @@ export interface Scene {
   phase: Phase
   attack: Attack
   libero: boolean
+  /** Current step of the rally playback (phase 'rally'). */
+  rallyStep?: number
 }
 
 /** Single entry point for the view: every player with look, spot and tag. */
 export function placePlayers(s: Scene): PlacedPlayer[] {
+  if (s.phase === 'rally') return rallyStep(s, s.rallyStep ?? 0).players
   const rec = s.phase === 'receive' ? receiveSpots(s.system, s.rotation) : null
   return playersAt(s.system, s.rotation).map((p) => {
     const d = displayRole(p, s.system, s.phase, s.libero)
@@ -33,7 +37,7 @@ export function placePlayers(s: Scene): PlacedPlayer[] {
       spot = rec.spots[p.id]
       tag = rec.passers.has(p.id) ? 'PASS' : setsThisRally(p, s.system) ? 'SETS' : undefined
     } else {
-      const f = spotFor(p, { system: s.system, phase: s.phase as Exclude<Phase, 'receive'>, attack: s.attack })
+      const f = spotFor(p, { system: s.system, phase: s.phase as Exclude<Phase, 'receive' | 'rally'>, attack: s.attack })
       spot = f.spot
       tag = f.tag
     }

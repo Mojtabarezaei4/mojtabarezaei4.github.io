@@ -10,6 +10,8 @@ export interface State {
   speed: number
   /** Player id being followed ("Pick your position"), or null for everyone. */
   follow: string | null
+  /** Step of the rally playback, 0–4 (Serve, Pass, Set, Attack, Base). */
+  rallyStep: number
 }
 
 export type Action =
@@ -23,29 +25,35 @@ export type Action =
   | { type: 'toggle' }
   | { type: 'speed'; speed: number }
   | { type: 'follow'; id: string | null }
+  | { type: 'rallyNext' }
+  | { type: 'rallyStep'; step: number }
 
 export const SPEED_MIN = 0.25
 export const SPEED_MAX = 2
 export const BASE_MOVE_MS = 950
 export const BASE_TICK_MS = 2600
+export const RALLY_TICK_MS = 1800
+export const RALLY_LAST = 4
 
 export function initialState(system: SystemKey = '5-1'): State {
-  return { system, rotation: 0, phase: 'lineup', attack: 'right', libero: true, playing: true, speed: 1, follow: null }
+  return { system, rotation: 0, phase: 'lineup', attack: 'right', libero: true, playing: true, speed: 1, follow: null, rallyStep: 0 }
 }
 
 const wrap = (n: number) => ((n % 6) + 6) % 6
 
 export function reducer(s: State, a: Action): State {
   switch (a.type) {
-    case 'next': return { ...s, rotation: wrap(s.rotation + 1) }
-    case 'prev': return { ...s, rotation: wrap(s.rotation - 1) }
-    case 'jump': return { ...s, rotation: wrap(a.rotation) }
-    case 'system': return { ...s, system: a.system, rotation: 0, follow: null }
-    case 'phase': return { ...s, phase: a.phase }
+    case 'next': return { ...s, rotation: wrap(s.rotation + 1), rallyStep: 0 }
+    case 'prev': return { ...s, rotation: wrap(s.rotation - 1), rallyStep: 0 }
+    case 'jump': return { ...s, rotation: wrap(a.rotation), rallyStep: 0 }
+    case 'system': return { ...s, system: a.system, rotation: 0, follow: null, rallyStep: 0 }
+    case 'phase': return { ...s, phase: a.phase, rallyStep: 0 }
     case 'attack': return { ...s, attack: a.attack }
     case 'libero': return { ...s, libero: a.on }
     case 'toggle': return { ...s, playing: !s.playing }
     case 'follow': return { ...s, follow: a.id }
+    case 'rallyNext': return s.rallyStep >= RALLY_LAST ? { ...s, rallyStep: 0, rotation: wrap(s.rotation + 1) } : { ...s, rallyStep: s.rallyStep + 1 }
+    case 'rallyStep': return { ...s, rallyStep: Math.min(RALLY_LAST, Math.max(0, a.step)) }
     case 'speed': return { ...s, speed: Math.min(SPEED_MAX, Math.max(SPEED_MIN, a.speed)) }
   }
 }

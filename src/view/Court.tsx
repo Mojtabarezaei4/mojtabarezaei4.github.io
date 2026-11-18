@@ -21,7 +21,7 @@ export function Court({ phase, attack, showPath }: Props) {
         <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#0B0E12" /><stop offset="1" stopColor="#121821" /></linearGradient>
       </defs>
       <rect width="1000" height="860" fill="url(#fade)" />
-      {phase !== 'receive' && phase !== 'defense' && <text x="500" y="36" textAnchor="middle" className="svg-label" fill="#8A949F">OPPONENT SIDE · NOT SHOWN</text>}
+      {phase !== 'receive' && phase !== 'defense' && phase !== 'rally' && <text x="500" y="36" textAnchor="middle" className="svg-label" fill="#8A949F">OPPONENT SIDE · NOT SHOWN</text>}
       <polygon points={G.free} fill="#1E3A57" />
       <polygon points={G.court} fill="#2E5E8E" />
       <polygon points={G.front} fill="#336898" />

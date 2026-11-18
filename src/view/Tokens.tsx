@@ -6,7 +6,7 @@ import { useReducedMotion } from './useReducedMotion'
 
 const TAG_COLOR: Record<Tag, string> = {
   SERVE: '#FFB24D', PASS: '#5CE1E6', SETS: '#FFD84D', BLOCK: '#FF6F59', TIP: '#EDE8DF',
-  LINE: '#5CE1E6', CROSS: '#5CE1E6', DIG: '#5CE1E6', DEEP: '#C4A1FF',
+  LINE: '#5CE1E6', CROSS: '#5CE1E6', DIG: '#5CE1E6', DEEP: '#C4A1FF', ATTACK: '#FF6F59', COVER: '#A3E635',
 }
 const pct = (x: number, d: number) => { const p = project(x, d); return { left: (p.x / VIEW_W) * 100, top: (p.y / VIEW_H) * 100, s: p.s, y: p.y } }
 

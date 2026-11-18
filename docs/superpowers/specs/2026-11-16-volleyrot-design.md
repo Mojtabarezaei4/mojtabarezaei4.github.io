@@ -36,6 +36,8 @@ A web app that teaches a beginner how volleyball rotations, serve receive, the s
 | Switch | specialist spots FL(1.1,1.5) FM(4.5,1.1) FR(7.9,1.5) SET(6.1,0.9) BL(1.8,6.9) BM(4.5,7.7) BR(7.2,6.9); 6-6 stays in Lineup spots |
 | Defense | perimeter defense, attack from left / middle / right (screen side); see defense table in the design script `DEF`; attack ball + line and cross arrows |
 
+**Rally** (added 2026-11-18): one side-out point – Serve (opponent serves to the middle passer), Pass (to the setter's target), Set (high to the front-row outside hitter; 6-6: zone-4 player), Attack (over the net, two nearest teammates COVER), Base (switch spots). The ball flies in a parabola with a floor shadow and must stay inside the picture. Autoplay: one step every `1800 / speed` ms, after Base the team rotates.
+
 Ghost rings (dashed, at the player's official zone spot) show in every phase except Lineup.
 
 ## Controls

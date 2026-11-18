@@ -78,3 +78,26 @@ describe('pick your position', () => {
     expect(opts).toEqual(['', 'S1', 'OH1', 'MB1', 'S2', 'OH2', 'MB2'])
   })
 })
+
+describe('rally playback', () => {
+  test('the Rally view shows step buttons, a caption and the ball', () => {
+    render(<PlayerScreen initialSystem="5-1" />)
+    fireEvent.click(screen.getByRole('button', { name: 'Rally' }))
+    const g = screen.getByRole('group', { name: 'Rally step' })
+    expect(within(g).getAllByRole('button').map((b) => b.textContent)).toEqual(['1 Serve', '2 Pass', '3 Set', '4 Attack', '5 Base'])
+    expect(screen.getByText(/The other team serves/)).toBeInTheDocument()
+    expect(screen.getByTestId('ball')).toBeInTheDocument()
+    fireEvent.click(within(g).getByRole('button', { name: /Attack/ }))
+    expect(screen.getByText(/attacks over the net/)).toBeInTheDocument()
+  })
+  test('the ball is hidden at the base step', () => {
+    render(<PlayerScreen initialSystem="5-1" />)
+    fireEvent.click(screen.getByRole('button', { name: 'Rally' }))
+    fireEvent.click(screen.getByRole('button', { name: /Base/ }))
+    expect(screen.queryByTestId('ball')).toBeNull()
+  })
+  test('rally step buttons are not shown in other views', () => {
+    render(<PlayerScreen initialSystem="5-1" />)
+    expect(screen.queryByRole('group', { name: 'Rally step' })).toBeNull()
+  })
+})

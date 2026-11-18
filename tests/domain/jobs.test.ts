@@ -50,3 +50,19 @@ describe('jobNote', () => {
         }
   })
 })
+
+describe('rally job notes', () => {
+  test('the attacker is told to attack, coverers to cover', () => {
+    expect(note('OH1', { phase: 'rally', rallyStep: 3 }).text).toMatch(/attack/i)
+    const s = sc({ phase: 'rally', rallyStep: 3 })
+    const cover = placePlayers(s).find((p) => p.tag === 'COVER')!
+    expect(jobNote(cover, s).text).toMatch(/cover/i)
+  })
+  test('every player has a rally note at every step', () => {
+    for (const system of ['6-6', '5-1', '6-2', '4-2'] as const)
+      for (let rallyStep = 0; rallyStep < 5; rallyStep++) {
+        const s = sc({ system, phase: 'rally', rallyStep })
+        for (const p of placePlayers(s)) expect(jobNote(p, s).text.length).toBeGreaterThan(10)
+      }
+  })
+})
