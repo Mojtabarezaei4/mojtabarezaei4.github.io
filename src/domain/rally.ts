@@ -52,8 +52,9 @@ export function rallyStep(s: { system: SystemKey; rotation: number; attack: Atta
     if (p.id === setter.id) return target
     if (p.id === attacker.id) return step === 1 ? APPROACH : HIT
     if (p.front) {
-      // other front-row hitters approach too (decoys)
-      const mid = p.role === 'MB' || p.zone === 3
+      // other front-row hitters approach too (decoys): middles in the middle, everyone else on the right.
+      // (In 6-6 there are no middles, so the zone-3 player takes the middle.)
+      const mid = system === '6-6' ? p.zone === 3 : p.role === 'MB'
       if (mid) return step === 1 ? { x: 4.5, d: 3.0 } : { x: 5.0, d: 0.8 }
       return step === 1 ? { x: 8.0, d: 3.4 } : { x: 7.8, d: 1.2 }
     }

@@ -76,3 +76,15 @@ test.each(SYSTEMS)('%s: the ball stays inside the picture for the whole flight',
       }
     }
 })
+
+test.each(SYSTEMS)('%s: no two players stand on top of each other at any rally step (bug: OPP + MB1 in 5-1 rotation 2)', (system) => {
+  for (let r = 0; r < 6; r++)
+    for (let step = 0; step < 5; step++) {
+      const ps = rs(system, r, step).players
+      for (let i = 0; i < ps.length; i++)
+        for (let j = i + 1; j < ps.length; j++) {
+          const d = Math.hypot(ps[i].spot.x - ps[j].spot.x, ps[i].spot.d - ps[j].spot.d)
+          expect(d, `${system} r${r} step ${step}: ${ps[i].id} and ${ps[j].id}`).toBeGreaterThanOrEqual(1.0)
+        }
+    }
+})
