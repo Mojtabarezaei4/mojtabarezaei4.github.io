@@ -15,7 +15,7 @@ interface Card {
 const P = (c: string, r: Role): [string, Role] => [c, r]
 const CARDS: Card[] = [
   { key: '6-6', n: '01', badge: 'START HERE', badgeKind: 'go', sub: 'Everyone does everything', front: [P('P4', 'P'), P('P3', 'S'), P('P2', 'P')], back: [P('P5', 'P'), P('P6', 'P'), P('P1', 'P')], text: 'No fixed roles. Whoever rotates into zone 3 sets that rally. Great for learning the zones themselves.' },
-  { key: '5-1', n: '02', badge: 'MOST COMMON', badgeKind: 'accent', sub: '5 hitters · 1 setter', front: [P('OPP', 'OPP'), P('MB1', 'MB'), P('OH1', 'OH')], back: [P('OH2', 'OH'), P('MB2', 'MB'), P('S', 'S')], text: 'One setter sets in all six rotations. The opposite stands across from them. Front row has 2 or 3 attackers.' },
+  { key: '5-1', n: '02', badge: 'MOST COMMON', badgeKind: 'accent', sub: '5 hitters · 1 setter', front: [P('OPP', 'OPP'), P('MB2', 'MB'), P('OH1', 'OH')], back: [P('OH2', 'OH'), P('MB1', 'MB'), P('S', 'S')], text: 'One setter sets in all six rotations. The opposite stands across from them. Front row has 2 or 3 attackers.' },
   { key: '6-2', n: '03', badge: 'INTERMEDIATE', badgeKind: 'plain', sub: '6 hitters · 2 setters', front: [P('S2', 'S'), P('MB1', 'MB'), P('OH1', 'OH')], back: [P('OH2', 'OH'), P('MB2', 'MB'), P('S1', 'S')], text: 'Two setters stand opposite each other. The one in the back row sets, so three attackers are always at the net.' },
   { key: '4-2', n: '04', badge: 'RECREATIONAL', badgeKind: 'plain', sub: '4 hitters · 2 setters', front: [P('S2', 'S'), P('MB1', 'MB'), P('OH1', 'OH')], back: [P('OH2', 'OH'), P('MB2', 'MB'), P('S1', 'S')], text: 'Same lineup as a 6-2, flipped: the front-row setter sets, so only two attackers are up front.' },
 ]

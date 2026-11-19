@@ -18,14 +18,14 @@ describe('playbook', () => {
   })
   test('an illegal move is reported with names and numbers', () => {
     let pb = setRoster(emptyPlaybook('5-1'), 'OPP', { name: 'Sara', num: '9' })
-    pb = setRoster(pb, 'MB1', { name: 'Ida', num: '11' })
-    pb = setSpot(pb, 0, 'receive', 'OPP', { x: 5.5, d: 1.0 }) // OPP (zone 4) right of MB1 (zone 3)
+    pb = setRoster(pb, 'MB2', { name: 'Ida', num: '11' })
+    pb = setSpot(pb, 0, 'receive', 'OPP', { x: 5.5, d: 1.0 }) // OPP (zone 4) right of MB2 (zone 3)
     expect(playbookStatus(pb, 0, 'receive')).toBe('overlap')
     expect(playbookViolations(pb, 0, 'receive')).toContain('#9 Sara (zone 4) must stay left of #11 Ida (zone 3)')
   })
   test('without a roster, codes are used', () => {
     const pb = setSpot(emptyPlaybook('5-1'), 0, 'receive', 'OPP', { x: 5.5, d: 1.0 })
-    expect(playbookViolations(pb, 0, 'receive')).toContain('OPP (zone 4) must stay left of MB1 (zone 3)')
+    expect(playbookViolations(pb, 0, 'receive')).toContain('OPP (zone 4) must stay left of MB2 (zone 3)')
   })
   test('in serve the server is exempt from the overlap rule', () => {
     const pb = setSpot(emptyPlaybook('5-1'), 0, 'serve', 'S', { x: 1, d: 10.5 })

@@ -41,12 +41,12 @@ describe('switch', () => {
 })
 
 describe('defense', () => {
-  test('attack on the right: OPP and MB1 block, OH1 covers tips, back middle deep', () => {
+  test('attack on the right: OPP and MB2 block, OH1 covers tips, back middle deep', () => {
     const c = ctx('5-1', 'defense', 'right')
     expect(spotFor(find('5-1', 0, 'OPP'), c).tag).toBe('BLOCK')
-    expect(spotFor(find('5-1', 0, 'MB1'), c).tag).toBe('BLOCK')
+    expect(spotFor(find('5-1', 0, 'MB2'), c).tag).toBe('BLOCK')
     expect(spotFor(find('5-1', 0, 'OH1'), c).tag).toBe('TIP')
-    expect(spotFor(find('5-1', 0, 'MB2'), c).tag).toBe('DEEP')
+    expect(spotFor(find('5-1', 0, 'MB1'), c).tag).toBe('DEEP')
   })
   test('attack in the middle has exactly one blocker', () => {
     const tags = playersAt('5-1', 0).map((p) => spotFor(p, ctx('5-1', 'defense', 'middle')).tag)

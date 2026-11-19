@@ -1,8 +1,8 @@
 # Volleyrot – status
 
-**Phase:** Live at https://mojtabarezaei4.github.io/ ; 2026-11-18 update: system order 6-6/5-1/6-2/4-2 (5-1 chart change undone, pending confirmation); Pick your position + Rally playback + Coach view (share-link playbook) added
+**Phase:** Live at https://mojtabarezaei4.github.io/ ; 2026-11-18 update: system order 6-6/5-1/6-2/4-2 5-1 from owner's chart (confirmed 2026-11-19); Pick your position + Rally playback + Coach view (share-link playbook) added
 **Last session:** 2026-11-18 (system order; 5-1 chart applied then undone)
-**Next step:** Owner commits + pushes the 2026-11-18 changes. Owner confirms the 5-1 chart (transcription ready in `.ai/pending/chart51.ts.txt`); get sources for 6-2/4-2; deferred minors in `.ai/build-ledger.md`.
+**Next step:** Owner commits + pushes the 2026-11-18 changes. Get charts/sources for 6-2/4-2 like the 5-1; deferred minors in `.ai/build-ledger.md`.
 
 ## Sources of truth (newest wins)
 
@@ -29,6 +29,7 @@
 - On phones the two BLOCK tags at the net can overlap slightly.
 
 ## Session log
+- 2026-11-19 – 5-1 from owner's chart (re-applied on top of rally + coach view; fixed: coach serve spots now win over the chart). 271 tests.
 - 2026-11-19 – Coach view v1: `src/domain/playbook.ts` (encode/decode, overlap with names), `src/view/CoachScreen.tsx`, routes `#/coach` and `#/play?pb=`. Design on canvas artboard 5. 259 tests.
 - 2026-11-18 – Rally playback: phase 'rally', `src/domain/rally.ts`, `src/view/Ball.tsx`, reducer rallyStep/rallyNext. 231 tests.
 - 2026-11-18 – Pick your position: Follow picker, JobCard (`src/domain/jobs.ts`), token highlight. 186 tests.

@@ -3,7 +3,7 @@ import {
   encodePlaybook, noteFor, playbookStatus, playbookViolations, playerLabel, resetSpots, setNote, setRoster, setSpot, spotsFor,
   type Playbook, type Situation,
 } from '../domain/playbook'
-import { playersAt } from '../domain/rotation'
+import { playersAt, rotationLabel } from '../domain/rotation'
 import { ROLE_INFO } from '../domain/systems'
 import { SYSTEM_KEYS, type Spot, type SystemKey, type Zone } from '../domain/types'
 import { emptyPlaybook } from '../domain/playbook'
@@ -59,6 +59,7 @@ export function CoachScreen({ initial, onChange }: { initial?: Playbook | null; 
     return { x: X0 + ((e.clientX - r.left) / r.width) * SPAN, d: D0 + ((e.clientY - r.top) / r.height) * SPAN }
   }
   const flagged = new Set(violations.length ? players.filter((p) => violations.some((v) => v.includes(`(zone ${p.zone})`))).map((p) => p.id) : [])
+  const n = (r: number) => rotationLabel(pb.system, r)
   const rosterIds = [...players.map((p) => p.id), ...(pb.system === '6-6' ? [] : ['L'])]
 
   return (
@@ -82,7 +83,7 @@ export function CoachScreen({ initial, onChange }: { initial?: Playbook | null; 
       <div className="coach-bar">
         <div className="pips" role="group" aria-label="Rotation">
           {[0, 1, 2, 3, 4, 5].map((i) => (
-            <button key={i} type="button" className="pip" aria-label={`Rotation ${i + 1}`} aria-pressed={i === rotation} onClick={() => setRotation(i)}>{i + 1}</button>
+            <button key={i} type="button" className="pip" aria-label={`Rotation ${n(i)}`} aria-pressed={i === rotation} onClick={() => setRotation(i)}>{n(i)}</button>
           ))}
         </div>
         <div className="phases" role="group" aria-label="Situation">
@@ -112,7 +113,7 @@ export function CoachScreen({ initial, onChange }: { initial?: Playbook | null; 
 
         <main className="coach-main">
           <section className="card">
-            <h2>Rotation {rotation + 1} · {situation === 'serve' ? 'We serve' : 'Receive'}</h2>
+            <h2>Rotation {n(rotation)} · {situation === 'serve' ? 'We serve' : 'Receive'}</h2>
             <p className="hint">Drag players, or select one and use the arrow keys (½ m per press). Net at the top.</p>
             <div className="edit-court" ref={courtRef}>
               <div className="ec-net" style={{ top: `${pct({ x: 0, d: 0 }).top}%` }} />
@@ -151,7 +152,7 @@ export function CoachScreen({ initial, onChange }: { initial?: Playbook | null; 
             )}
           </section>
           <section className="card">
-            <label htmlFor="coach-note" className="eyebrow">Note to players · rotation {rotation + 1} · {situation === 'serve' ? 'we serve' : 'receive'}</label>
+            <label htmlFor="coach-note" className="eyebrow">Note to players · rotation {n(rotation)} · {situation === 'serve' ? 'we serve' : 'receive'}</label>
             <textarea id="coach-note" rows={3} maxLength={400} value={noteFor(pb, rotation, situation)}
               placeholder="e.g. Setter hides behind the right passer and releases on contact."
               onChange={(e) => update(setNote(pb, rotation, situation, e.target.value))} />
@@ -166,11 +167,11 @@ export function CoachScreen({ initial, onChange }: { initial?: Playbook | null; 
                 const st = playbookStatus(pb, r, situation)
                 const sp = spotsFor(pb, r, situation)
                 return (
-                  <button key={r} type="button" className={`pb-cell${r === rotation ? ' pb-cell--on' : ''}`} onClick={() => setRotation(r)} aria-label={`Rotation ${r + 1}, ${st}`}>
+                  <button key={r} type="button" className={`pb-cell${r === rotation ? ' pb-cell--on' : ''}`} onClick={() => setRotation(r)} aria-label={`Rotation ${n(r)}, ${st}`}>
                     <span className="pb-mini">
                       {playersAt(pb.system, r).map((p) => { const a = pct(sp[p.id]); return <i key={p.id} style={{ left: `${a.left}%`, top: `${a.top}%`, background: ROLE_INFO[p.role].color }} /> })}
                     </span>
-                    <span className={`pb-status pb-status--${st}`}>R{r + 1} · {st === 'overlap' ? 'OVERLAP' : st === 'custom' ? 'CUSTOM ✓' : 'DEFAULT'}</span>
+                    <span className={`pb-status pb-status--${st}`}>R{n(r)} · {st === 'overlap' ? 'OVERLAP' : st === 'custom' ? 'CUSTOM ✓' : 'DEFAULT'}</span>
                   </button>
                 )
               })}

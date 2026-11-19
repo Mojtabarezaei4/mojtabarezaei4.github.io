@@ -6,19 +6,19 @@ const at = (sys: Parameters<typeof playersAt>[0], r: number, code: string) => pl
 
 describe('displayRole', () => {
   test('back-row middle shows as libero when libero is on', () => {
-    expect(displayRole(at('5-1', 0, 'MB2'), '5-1', 'lineup', true)).toEqual({ role: 'L', code: 'L' })
+    expect(displayRole(at('5-1', 0, 'MB1'), '5-1', 'lineup', true)).toEqual({ role: 'L', code: 'L' })
   })
   test('libero off keeps the middle', () => {
-    expect(displayRole(at('5-1', 0, 'MB2'), '5-1', 'lineup', false)).toEqual({ role: 'MB', code: 'MB2' })
+    expect(displayRole(at('5-1', 0, 'MB1'), '5-1', 'lineup', false)).toEqual({ role: 'MB', code: 'MB1' })
   })
   test('middle in zone 1 serves itself, libero comes in for receive', () => {
-    const mb = at('5-1', 2, 'MB1') // MB1 starts in 3 → after 2 steps in zone 1
+    const mb = at('5-1', 2, 'MB2') // MB2 starts in 3 → after 2 steps in zone 1
     expect(mb.zone).toBe(1)
     expect(displayRole(mb, '5-1', 'serve', true).role).toBe('MB')
     expect(displayRole(mb, '5-1', 'receive', true).role).toBe('L')
   })
   test('front-row middle is never replaced', () => {
-    expect(displayRole(at('5-1', 0, 'MB1'), '5-1', 'receive', true).role).toBe('MB')
+    expect(displayRole(at('5-1', 0, 'MB2'), '5-1', 'receive', true).role).toBe('MB')
   })
   test('6-6 never shows a libero', () => {
     for (let r = 0; r < 6; r++)

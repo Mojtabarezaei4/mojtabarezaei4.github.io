@@ -21,7 +21,7 @@ describe('jobNote', () => {
   test('lineup names the zone, the row and the overlap neighbours', () => {
     const n = note('OH1') // zone 2, front row
     expect(n.title).toBe('Zone 2 · front row')
-    expect(n.text).toMatch(/right of MB1/)
+    expect(n.text).toMatch(/right of MB2/)
     expect(n.text).toMatch(/in front of S/)
   })
   test('the zone-1 player serves', () => {
@@ -31,7 +31,7 @@ describe('jobNote', () => {
     expect(note('OH1', { phase: 'receive' }).text).toMatch(/pass/i)
   })
   test('a middle replaced by the libero is off court', () => {
-    const n = note('MB2', { phase: 'receive' }) // back row at start
+    const n = note('MB1', { phase: 'receive' }) // back row at start (zone 6)
     expect(n.text).toMatch(/libero/i)
     expect(n.offCourt).toBe(true)
   })

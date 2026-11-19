@@ -19,7 +19,7 @@ describe('coach view', () => {
   test('moving OPP across MB1 raises an overlap warning and marks the rotation', () => {
     setup()
     press(token(/^OPP, zone 4/), 'ArrowRight', 9)
-    expect(screen.getByRole('alert')).toHaveTextContent('OPP (zone 4) must stay left of MB1 (zone 3)')
+    expect(screen.getByRole('alert')).toHaveTextContent('OPP (zone 4) must stay left of MB2 (zone 3)')
     expect(within(screen.getByRole('region', { name: 'Playbook' })).getByText(/R1 · OVERLAP/)).toBeInTheDocument()
   })
   test('reset to default clears the change', () => {
@@ -33,7 +33,7 @@ describe('coach view', () => {
     fireEvent.change(screen.getByLabelText('OPP number'), { target: { value: '9' } })
     fireEvent.change(screen.getByLabelText('OPP name'), { target: { value: 'Sara' } })
     press(token(/^#9 Sara, zone 4/), 'ArrowRight', 9)
-    expect(screen.getByRole('alert')).toHaveTextContent('#9 Sara (zone 4) must stay left of MB1 (zone 3)')
+    expect(screen.getByRole('alert')).toHaveTextContent('#9 Sara (zone 4) must stay left of MB2 (zone 3)')
   })
   test('the server may stand anywhere behind the end line in serve', () => {
     setup()
@@ -54,7 +54,15 @@ describe('coach view', () => {
   })
   test('rotation buttons switch the edited rotation', () => {
     setup()
-    fireEvent.click(screen.getByRole('button', { name: 'Rotation 2' }))
-    expect(screen.getByRole('heading', { name: /Rotation 2 · Receive/ })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Rotation 4' }))
+    expect(screen.getByRole('heading', { name: /Rotation 4 · Receive/ })).toBeInTheDocument()
   })
+})
+
+test('5-1 rotations are numbered by setter zone in the coach view too', () => {
+  setup()
+  const g = screen.getByRole('group', { name: 'Rotation' })
+  expect(within(g).getAllByRole('button').map((b) => b.textContent)).toEqual(['1', '6', '5', '4', '3', '2'])
+  fireEvent.click(screen.getByRole('button', { name: 'Rotation 6' }))
+  expect(screen.getByRole('heading', { name: /Rotation 6 · Receive/ })).toBeInTheDocument()
 })

@@ -3,6 +3,7 @@ import { placePlayers, type PlacedPlayer } from '../domain/place'
 import { RALLY_STEPS, rallyStep as rallyFrame } from '../domain/rally'
 import { noteFor, playerLabel, spotsFor, type Playbook } from '../domain/playbook'
 import { setsThisRally } from '../domain/roles'
+import { rotationOrder } from '../domain/rotation'
 import type { Attack, Phase, SystemKey } from '../domain/types'
 import { BASE_MOVE_MS, initialState, reducer, RALLY_TICK_MS } from '../state/reducer'
 import { Ball as FlyingBall } from './Ball'
@@ -50,7 +51,7 @@ export function PlayerScreen({ initialSystem, onHome, playbook = null }: { initi
           </a>
           <SystemChips value={system} onChange={(s) => dispatch({ type: 'system', system: s })} />
         </div>
-        <RotationCounter rotation={rotation} setterLine={setterLine(players, system)} onJump={(r) => dispatch({ type: 'jump', rotation: r })} />
+        <RotationCounter rotation={rotation} labels={rotationOrder(system)} setterLine={setterLine(players, system)} onJump={(r) => dispatch({ type: 'jump', rotation: r })} />
         {pb && <span className="pb-banner">COACH PLAYBOOK · {pb.team || 'Shared'}</span>}
         <PhaseTabs value={phase} onChange={(p) => dispatch({ type: 'phase', phase: p })} />
       </header>

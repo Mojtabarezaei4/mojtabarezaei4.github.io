@@ -1,3 +1,4 @@
+import { CHART_5_1 } from './chart51'
 import { setsThisRally } from './roles'
 import { playersAt } from './rotation'
 import type { Player, Spot, SystemKey, Zone } from './types'
@@ -23,6 +24,15 @@ export function receiveSpots(system: SystemKey, rotation: number): { spots: Reco
   const byZone = Object.fromEntries(players.map((p) => [p.zone, p])) as Record<Zone, Player>
   const spots: Record<string, Spot> = {}
   const passers = new Set<string>()
+
+  if (system === '5-1') {
+    const chart = CHART_5_1[players.find((p) => p.role === 'S')!.zone].receive
+    for (const p of players) {
+      spots[p.id] = { ...chart[p.id] }
+      if (p.role === 'OH' || (p.role === 'MB' && !p.front)) passers.add(p.id)
+    }
+    return { spots, passers }
+  }
 
   if (system === '6-6') {
     for (const p of players) {

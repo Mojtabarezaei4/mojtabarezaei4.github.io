@@ -20,10 +20,11 @@ A web app that teaches a beginner how volleyball rotations, serve receive, the s
 - Tokens: colored disc with short code, stem and floor shadow, scaled by `s/70`, standing on their floor point; optional tag pill above (SERVE, PASS, SETS, BLOCK, TIP, LINE, CROSS, DIG, DEEP).
 - Roles and colors: S Setter `#FFD84D`, OH Outside Hitter `#5CE1E6`, MB Middle Blocker `#A3E635`, OPP Opposite `#FF6F59`, L Libero `#C4A1FF`, P Player (6-6) `#E6E1D6`.
 - Starting lineups (zone → code), setter in zone 1:
-  - 5-1: 1 S, 2 OH1, 3 MB1, 4 OPP, 5 OH2, 6 MB2
+  - 5-1: 1 S, 2 OH1, 3 MB2, 4 OPP, 5 OH2, 6 MB1 — from the owner's chart "The 5-1 rotation system" (H = OH, M = MB, O = OPP)
   - 6-2 and 4-2: 1 S1, 2 OH1, 3 MB1, 4 S2, 5 OH2, 6 MB2
   - 6-6: zone n → Pn
-- Rotation: clockwise, each step zone 2→1, 1→6, 6→5, 5→4, 4→3, 3→2. Rotation N = N−1 steps.
+- Rotation: clockwise, each step zone 2→1, 1→6, 6→5, 5→4, 4→3, 3→2. 5-1 rotations are numbered by the setter's zone, in play order 1, 6, 5, 4, 3, 2 (as on the chart, also in the coach view); other systems count 1–6.
+- **5-1 Serve and Serve receive positions come from the owner's chart** (`src/domain/chart51.ts`, confirmed 2026-11-19). They are also the coach view's defaults and the rally's starting spots. Other systems use the rule-based positions below.
 - Who sets: 5-1 the S always; 6-2 the back-row S; 4-2 the front-row S; 6-6 whoever is in zone 3.
 - Libero (toggle, default on, not in 6-6): replaces the back-row MB; in zone 1 the MB stays during Lineup and Serve, the libero is shown in Receive, Switch, Defense.
 

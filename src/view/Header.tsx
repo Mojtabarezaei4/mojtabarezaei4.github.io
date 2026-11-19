@@ -12,17 +12,17 @@ export function SystemChips({ value, onChange }: { value: SystemKey; onChange: (
   )
 }
 
-export function RotationCounter({ rotation, setterLine, onJump }: { rotation: number; setterLine: string; onJump: (r: number) => void }) {
+export function RotationCounter({ rotation, labels, setterLine, onJump }: { rotation: number; labels: number[]; setterLine: string; onJump: (r: number) => void }) {
   return (
     <div className="counter">
       <div className="counter-num">
         <span className="eyebrow">ROTATION</span>
-        <div><output aria-label="Current rotation" className="counter-big">{rotation + 1}</output><span className="counter-of">/ 6</span></div>
+        <div><output aria-label="Current rotation" className="counter-big">{labels[rotation]}</output><span className="counter-of">/ 6</span></div>
       </div>
       <div className="counter-side">
         <div className="pips" role="group" aria-label="Jump to rotation">
-          {[0, 1, 2, 3, 4, 5].map((i) => (
-            <button key={i} type="button" className="pip" aria-label={`Rotation ${i + 1}`} aria-pressed={i === rotation} onClick={() => onJump(i)}>{i + 1}</button>
+          {labels.map((n, i) => (
+            <button key={i} type="button" className="pip" aria-label={`Rotation ${n}`} aria-pressed={i === rotation} onClick={() => onJump(i)}>{n}</button>
           ))}
         </div>
         <span className="counter-line">{setterLine}</span>

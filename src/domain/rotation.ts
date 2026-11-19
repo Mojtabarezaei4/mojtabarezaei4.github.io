@@ -18,3 +18,13 @@ export function playersAt(system: SystemKey, rotation: number): Player[] {
     return { id: code, code, role: code.replace(/\d/g, '') as Role, startZone, zone, front: zone >= 2 && zone <= 4 }
   })
 }
+
+/** Play order of rotation labels. 5-1 is numbered by the setter's zone (1, 6, 5, 4, 3, 2), as on the reference chart. */
+export function rotationOrder(system: SystemKey): number[] {
+  return [0, 1, 2, 3, 4, 5].map((r) => rotationLabel(system, r))
+}
+
+/** Number shown for rotation index 0–5. */
+export function rotationLabel(system: SystemKey, rotation: number): number {
+  return system === '5-1' ? rotZone(1, rotation) : (((rotation % 6) + 6) % 6) + 1
+}

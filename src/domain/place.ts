@@ -1,8 +1,9 @@
+import { CHART_5_1 } from './chart51'
 import { BASE, spotFor } from './formations'
 import { rallyStep } from './rally'
 import { receiveSpots } from './receive'
 import { displayRole, setsThisRally } from './roles'
-import { playersAt } from './rotation'
+import { playersAt, rotZone } from './rotation'
 import { ROLE_INFO } from './systems'
 import type { Attack, Phase, Player, Role, Spot, SystemKey, Tag } from './types'
 
@@ -38,6 +39,10 @@ export function placePlayers(s: Scene): PlacedPlayer[] {
     if (rec) {
       spot = s.overrides?.receive?.[p.id] ?? rec.spots[p.id]
       tag = rec.passers.has(p.id) ? 'PASS' : setsThisRally(p, s.system) ? 'SETS' : undefined
+    } else if (s.system === '5-1' && s.phase === 'serve') {
+      const setterZone = rotZone(1, s.rotation)
+      spot = s.overrides?.serve?.[p.id] ?? CHART_5_1[setterZone].serve[p.id]
+      tag = p.zone === 1 ? 'SERVE' : undefined
     } else {
       const f = spotFor(p, { system: s.system, phase: s.phase as Exclude<Phase, 'receive' | 'rally'>, attack: s.attack })
       spot = (s.phase === 'serve' && s.overrides?.serve?.[p.id]) || f.spot

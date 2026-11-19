@@ -1,5 +1,3 @@
-// NOT IN USE – 5-1 chart transcription from 2026-11-18, undone at owner's request pending confirmation.
-// Lineup it assumes: 1 S, 2 OH1, 3 MB2, 4 OPP, 5 OH2, 6 MB1; numbering by setter zone (1,6,5,4,3,2).
 import type { Spot, Zone } from './types'
 
 /**

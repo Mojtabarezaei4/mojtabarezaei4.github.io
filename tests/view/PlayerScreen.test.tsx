@@ -5,7 +5,7 @@ import { PlayerScreen } from '../../src/view/PlayerScreen'
 const counter = () => screen.getByLabelText('Current rotation')
 
 test('next button advances the rotation counter', () => {
-  render(<PlayerScreen initialSystem="5-1" />)
+  render(<PlayerScreen initialSystem="6-2" />)
   expect(counter()).toHaveTextContent('1')
   fireEvent.click(screen.getByRole('button', { name: 'Next rotation' }))
   expect(counter()).toHaveTextContent('2')
@@ -100,4 +100,16 @@ describe('rally playback', () => {
     render(<PlayerScreen initialSystem="5-1" />)
     expect(screen.queryByRole('group', { name: 'Rally step' })).toBeNull()
   })
+})
+
+test('5-1 counts rotations by setter zone: 1 then 6', () => {
+  render(<PlayerScreen initialSystem="5-1" />)
+  expect(counter()).toHaveTextContent('1')
+  fireEvent.click(screen.getByRole('button', { name: 'Next rotation' }))
+  expect(counter()).toHaveTextContent('6')
+})
+test('5-1 jump buttons are in play order 1 6 5 4 3 2', () => {
+  render(<PlayerScreen initialSystem="5-1" />)
+  const g = screen.getByRole('group', { name: 'Jump to rotation' })
+  expect(within(g).getAllByRole('button').map((b) => b.textContent)).toEqual(['1', '6', '5', '4', '3', '2'])
 })
