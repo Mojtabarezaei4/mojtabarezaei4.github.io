@@ -40,12 +40,12 @@ export function Legend({ system, libero }: { system: SystemKey; libero: boolean 
   )
 }
 
-export function RotationInfo({ players }: { players: PlacedPlayer[] }) {
+export function RotationInfo({ players, nameOf }: { players: PlacedPlayer[]; nameOf?: (p: PlacedPlayer) => string }) {
   const at = (z: Zone) => players.find((p) => p.zone === z)!
   const Row = ({ zones, label }: { zones: Zone[]; label: string }) => (
     <div className="row-info">
       <span className="eyebrow">{label}</span>
-      <div>{zones.map((z) => <span key={z} style={{ background: at(z).show.color }}>{at(z).show.code}</span>)}</div>
+      <div>{zones.map((z) => <span key={z} style={{ background: at(z).show.color }}>{nameOf ? nameOf(at(z)) : at(z).show.code}</span>)}</div>
     </div>
   )
   return (

@@ -1,6 +1,7 @@
 import { act, render, screen } from '@testing-library/react'
 import { afterEach, expect, test } from 'vitest'
 import App, { parseRoute } from '../../src/app/App'
+import { emptyPlaybook, encodePlaybook } from '../../src/domain/playbook'
 
 afterEach(() => { window.location.hash = '' })
 
@@ -34,4 +35,15 @@ test('picker cards follow the order 6-6, 5-1, 6-2, 4-2', () => {
   render(<App />)
   const hrefs = screen.getAllByRole('link').map((a) => a.getAttribute('href')).filter((h) => h?.startsWith('#/play'))
   expect(hrefs).toEqual(['#/play?system=6-6', '#/play?system=5-1', '#/play?system=6-2', '#/play?system=4-2'])
+})
+
+test('coach routes', () => {
+  expect(parseRoute('#/coach')).toEqual({ screen: 'coach', playbook: null })
+  const code = encodePlaybook({ ...emptyPlaybook('6-2'), team: 'X' })
+  expect(parseRoute(`#/coach?pb=${code}`)).toMatchObject({ screen: 'coach', playbook: { system: '6-2', team: 'X' } })
+  expect(parseRoute(`#/play?pb=${code}`)).toMatchObject({ screen: 'play', system: '6-2', playbook: { team: 'X' } })
+})
+test('the picker links to the coach view', () => {
+  render(<App />)
+  expect(screen.getByRole('link', { name: /Coach view/ })).toHaveAttribute('href', '#/coach')
 })

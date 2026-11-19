@@ -26,7 +26,8 @@ Status: `[x]` built (MVP, branch `mvp`) · `[~]` in progress · `[ ]` not starte
 ## Later
 - [ ] Overlap checker – drag freely, flag illegal positions and explain which neighbours are out of order
 - [ ] More defenses – rotational defense, middle-up, single vs. double block
-- [ ] Formation editor – let a coach adjust spots and save a team playbook
+- [x] Coach view v1 – roster, drag/arrow-key formation editor for Serve + Receive, live overlap check, notes, playbook overview, share link with the whole playbook (2026-11-19)
+- [ ] Coach view: print lineup card · edit Defense spots · names in the player-view summary line · shorter links (compression)
 - [ ] Rules cards – libero, back-row attack, overlap, substitutions, linked to the moment they apply
 - [ ] Offline / installable (PWA) for courtside use
 - [ ] Custom domain: add `public/CNAME` (base is already `/`), DNS at registrar, verify domain, enforce HTTPS

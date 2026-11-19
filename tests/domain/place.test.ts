@@ -20,3 +20,14 @@ test('6-6 zone-3 player is painted as setter', () => {
   const p = placePlayers({ ...s, system: '6-6', phase: 'lineup' }).find((x) => x.zone === 3)!
   expect(p.show.color).toBe('#FFD84D')
 })
+
+test('coach overrides replace receive and serve spots', () => {
+  const overrides = { receive: { OH2: { x: 1.0, d: 7.0 } }, serve: { S: { x: 2.0, d: 10.5 } } }
+  expect(placePlayers({ ...s, overrides }).find((p) => p.id === 'OH2')!.spot).toEqual({ x: 1.0, d: 7.0 })
+  expect(placePlayers({ ...s, phase: 'serve', overrides }).find((p) => p.id === 'S')!.spot).toEqual({ x: 2.0, d: 10.5 })
+  expect(placePlayers({ ...s, phase: 'switch', overrides }).find((p) => p.id === 'OH2')!.spot).not.toEqual({ x: 1.0, d: 7.0 })
+})
+test('the rally starts from the coach receive spots', () => {
+  const overrides = { receive: { OH2: { x: 1.0, d: 7.0 } } }
+  expect(placePlayers({ ...s, phase: 'rally', rallyStep: 0, overrides }).find((p) => p.id === 'OH2')!.spot).toEqual({ x: 1.0, d: 7.0 })
+})

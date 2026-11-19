@@ -14,3 +14,4 @@
 | 2026-11-18 | System order 6-6, 5-1, 6-2, 4-2 (picker + chips) | Owner's request |
 | 2026-11-18 | 5-1 chart ("The 5-1 rotation system") applied, then UNDONE the same day – owner wants to confirm the chart first. Transcription kept in `.ai/pending/chart51.ts.txt` | Owner's request |
 | 2026-11-18 | 6-2 / 4-2 have no external source yet: rule-based from general volleyball knowledge | Owner asked for the 6-2 source; waiting for a reference like the 5-1 chart |
+| 2026-11-19 | Coach playbook stored in the share link (base64url JSON in the URL), no backend | Owner chose option 1: free, no accounts; link must be re-sent after edits |

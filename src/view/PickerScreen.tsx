@@ -27,7 +27,7 @@ export function PickerScreen() {
     <div className="picker">
       <header className="picker-head">
         <span className="brand"><Ball /><span>VOLLEYROT</span></span>
-        <span className="eyebrow">ROTATION TRAINER · BEGINNER MODE</span>
+        <a className="coach-link" href="#/coach">Coach view →</a>
       </header>
 
       <section className="hero">

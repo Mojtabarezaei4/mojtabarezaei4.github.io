@@ -47,5 +47,8 @@ Ghost rings (dashed, at the player's official zone spot) show in every phase exc
 ## Visual system
 Ground `#0F1318`, panel `#171C23`, border `#2A313B`, text `#EDE8DF`, secondary `#C9C3B8`, muted `#9AA3AE`, accent amber `#FFB24D`, court `#2E5E8E`, front zone `#336898`, free zone `#1E3A57`. Fonts: Barlow Condensed (display), Barlow (body), JetBrains Mono (numbers/labels). Touch targets ≥ 44 px, text contrast ≥ 4.5:1, no emoji, icons are inline stroke SVG.
 
+## Coach view (added 2026-11-19)
+Route `#/coach` (linked from the picker). Coach picks system, enters team name and roster (number + name per player id, plus L), edits Serve and Receive spots per rotation on a flat top-down court (drag or arrow keys, ½ m snap; server limited to behind the end line), sees overlap faults live with names (server exempt in Serve), writes a note per rotation + situation, and sees all six rotations as default / custom / overlap. Storage = share link: the playbook is JSON → base64url in `#/play?pb=…` (coach's own URL `#/coach?pb=…` keeps it on reload). Players opening the link get the coach's spots in Serve, Receive and the rally start, the team banner, notes and names. Only changes from the defaults are stored.
+
 ## Out of scope for MVP
 Everything in BACKLOG.md under "Next up" and "Later".

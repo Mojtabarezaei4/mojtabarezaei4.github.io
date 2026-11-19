@@ -1,6 +1,7 @@
 import { useMemo, useReducer } from 'react'
 import { placePlayers, type PlacedPlayer } from '../domain/place'
 import { RALLY_STEPS, rallyStep as rallyFrame } from '../domain/rally'
+import { noteFor, playerLabel, spotsFor, type Playbook } from '../domain/playbook'
 import { setsThisRally } from '../domain/roles'
 import type { Attack, Phase, SystemKey } from '../domain/types'
 import { BASE_MOVE_MS, initialState, reducer, RALLY_TICK_MS } from '../state/reducer'
@@ -29,12 +30,16 @@ export function summaryLine(players: PlacedPlayer[], phase: Phase, attack: Attac
   return `${players.find((p) => p.zone === 1)!.show.code} serves from zone 1.`
 }
 
-export function PlayerScreen({ initialSystem, onHome }: { initialSystem: SystemKey; onHome?: () => void }) {
+export function PlayerScreen({ initialSystem, onHome, playbook = null }: { initialSystem: SystemKey; onHome?: () => void; playbook?: Playbook | null }) {
   const [state, dispatch] = useReducer(reducer, initialSystem, initialState)
   useAutoplay(state, dispatch)
   const { system, rotation, phase, attack, libero, playing, speed, follow, rallyStep } = state
-  const players = useMemo(() => placePlayers({ system, rotation, phase, attack, libero, rallyStep }), [system, rotation, phase, attack, libero, rallyStep])
-  const frame = useMemo(() => (phase === 'rally' ? rallyFrame({ system, rotation, attack, libero }, rallyStep) : null), [phase, system, rotation, attack, libero, rallyStep])
+  const pb = playbook && playbook.system === system ? playbook : null
+  const overrides = useMemo(() => (pb ? { receive: spotsFor(pb, rotation, 'receive'), serve: spotsFor(pb, rotation, 'serve') } : undefined), [pb, rotation])
+  const players = useMemo(() => placePlayers({ system, rotation, phase, attack, libero, rallyStep, overrides }), [system, rotation, phase, attack, libero, rallyStep, overrides])
+  const frame = useMemo(() => (phase === 'rally' ? rallyFrame({ system, rotation, attack, libero, overrides }, rallyStep) : null), [phase, system, rotation, attack, libero, rallyStep, overrides])
+  const coachNote = pb && (phase === 'receive' || phase === 'serve') ? noteFor(pb, rotation, phase) : ''
+  const nameOf = pb ? (p: PlacedPlayer) => playerLabel(pb, p.show.code === 'L' ? 'L' : p.id) : undefined
 
   return (
     <div className="ps">
@@ -46,6 +51,7 @@ export function PlayerScreen({ initialSystem, onHome }: { initialSystem: SystemK
           <SystemChips value={system} onChange={(s) => dispatch({ type: 'system', system: s })} />
         </div>
         <RotationCounter rotation={rotation} setterLine={setterLine(players, system)} onJump={(r) => dispatch({ type: 'jump', rotation: r })} />
+        {pb && <span className="pb-banner">COACH PLAYBOOK · {pb.team || 'Shared'}</span>}
         <PhaseTabs value={phase} onChange={(p) => dispatch({ type: 'phase', phase: p })} />
       </header>
       <div className="ps-body">
@@ -73,11 +79,12 @@ export function PlayerScreen({ initialSystem, onHome }: { initialSystem: SystemK
           </div>
         </main>
         <aside className="ps-aside">
+          {coachNote && <section className="card coach-note" aria-label="Coach note"><h2>Coach note</h2><p>{coachNote}</p></section>}
           <FollowPicker players={players} value={follow} onChange={(id) => dispatch({ type: 'follow', id })} />
           {follow && <JobCard player={players.find((p) => p.id === follow)!} scene={{ system, rotation, phase, attack, libero, rallyStep }} />}
           <PhaseCard phase={phase} system={system} summary={frame ? `Step ${rallyStep + 1} of ${RALLY_STEPS.length} · ${RALLY_STEPS[rallyStep].label}` : summaryLine(players, phase, attack)} />
           <Legend system={system} libero={libero && system !== '6-6'} />
-          <RotationInfo players={players} />
+          <RotationInfo players={players} nameOf={nameOf} />
         </aside>
       </div>
     </div>

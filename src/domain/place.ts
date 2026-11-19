@@ -21,6 +21,8 @@ export interface Scene {
   libero: boolean
   /** Current step of the rally playback (phase 'rally'). */
   rallyStep?: number
+  /** Coach playbook spots for this rotation (shared link). Used for Serve, Receive and the rally's start. */
+  overrides?: Partial<Record<'serve' | 'receive', Record<string, Spot>>>
 }
 
 /** Single entry point for the view: every player with look, spot and tag. */
@@ -34,11 +36,11 @@ export function placePlayers(s: Scene): PlacedPlayer[] {
     let spot: Spot
     let tag: Tag | undefined
     if (rec) {
-      spot = rec.spots[p.id]
+      spot = s.overrides?.receive?.[p.id] ?? rec.spots[p.id]
       tag = rec.passers.has(p.id) ? 'PASS' : setsThisRally(p, s.system) ? 'SETS' : undefined
     } else {
       const f = spotFor(p, { system: s.system, phase: s.phase as Exclude<Phase, 'receive' | 'rally'>, attack: s.attack })
-      spot = f.spot
+      spot = (s.phase === 'serve' && s.overrides?.serve?.[p.id]) || f.spot
       tag = f.tag
     }
     return { ...p, show: { ...d, color }, spot, home: BASE[p.zone], tag }

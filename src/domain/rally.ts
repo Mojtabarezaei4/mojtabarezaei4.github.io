@@ -34,10 +34,11 @@ const HIT: Spot = { x: 1.3, d: 0.6 }
 const LANDING: P3 = { x: 6.5, d: -5.5, z: 0 }
 
 /** One step of a side-out rally (the other team serves, we pass–set–attack, then return to base). */
-export function rallyStep(s: { system: SystemKey; rotation: number; attack: Attack; libero: boolean }, step: number): RallyFrame {
+export function rallyStep(s: { system: SystemKey; rotation: number; attack: Attack; libero: boolean; overrides?: { receive?: Record<string, Spot> } }, step: number): RallyFrame {
   const { system } = s
   const players = playersAt(system, s.rotation)
-  const rec = receiveSpots(system, s.rotation)
+  const base0 = receiveSpots(system, s.rotation)
+  const rec = { passers: base0.passers, spots: { ...base0.spots, ...(s.overrides?.receive ?? {}) } }
   const setter = players.find((p) => setsThisRally(p, system))!
   const attacker = system === '6-6' ? players.find((p) => p.zone === 4)! : players.find((p) => p.role === 'OH' && p.front)!
   const passers = players.filter((p) => rec.passers.has(p.id) && p.id !== attacker.id)
