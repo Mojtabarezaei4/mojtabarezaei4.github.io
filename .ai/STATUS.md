@@ -29,6 +29,7 @@
 - On phones the two BLOCK tags at the net can overlap slightly.
 
 ## Session log
+- 2026-11-20 – Coach view: export as image → changed to ONE landscape picture: all rotations (placed like the zones) × Lineup/Serve/Receive. 286 tests.
 - 2026-11-19 – 5-1 from owner's chart (re-applied on top of rally + coach view; fixed: coach serve spots now win over the chart). 271 tests.
 - 2026-11-19 – Coach view v1: `src/domain/playbook.ts` (encode/decode, overlap with names), `src/view/CoachScreen.tsx`, routes `#/coach` and `#/play?pb=`. Design on canvas artboard 5. 259 tests.
 - 2026-11-18 – Rally playback: phase 'rally', `src/domain/rally.ts`, `src/view/Ball.tsx`, reducer rallyStep/rallyNext. 231 tests.

@@ -50,6 +50,7 @@ Ground `#0F1318`, panel `#171C23`, border `#2A313B`, text `#EDE8DF`, secondary `
 
 ## Coach view (added 2026-11-19)
 Route `#/coach` (linked from the picker). Coach picks system, enters team name and roster (number + name per player id, plus L), edits Serve and Receive spots per rotation on a flat top-down court (drag or arrow keys, ½ m snap; server limited to behind the end line), sees overlap faults live with names (server exempt in Serve), writes a note per rotation + situation, and sees all six rotations as default / custom / overlap. Storage = share link: the playbook is JSON → base64url in `#/play?pb=…` (coach's own URL `#/coach?pb=…` keeps it on reload). Players opening the link get the coach's spots in Serve, Receive and the rally start, the team banner, notes and names. Only changes from the defaults are stored.
+Export as image (added 2026-11-20, changed same day at owner's request): one "Download image" button → one landscape PNG (3300 wide) of the whole playbook. Six rotation blocks placed like the zones on the court (R4 R3 R2 on top, R5 R6 R1 below; 5-1 labels = setter zone), each block = Lineup · We serve · Receive side by side on flat courts with numbers + names; overlap blocks marked red. Canvas 2D, no library (`src/view/exportLayout.ts` = content, `exportImage.ts` = painting).
 
 ## Out of scope for MVP
 Everything in BACKLOG.md under "Next up" and "Later".

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { describe, expect, test, vi } from 'vitest'
 import { decodePlaybook, emptyPlaybook } from '../../src/domain/playbook'
 import { CoachScreen } from '../../src/view/CoachScreen'
@@ -65,4 +65,15 @@ test('5-1 rotations are numbered by setter zone in the coach view too', () => {
   expect(within(g).getAllByRole('button').map((b) => b.textContent)).toEqual(['1', '6', '5', '4', '3', '2'])
   fireEvent.click(screen.getByRole('button', { name: 'Rotation 6' }))
   expect(screen.getByRole('heading', { name: /Rotation 6 · Receive/ })).toBeInTheDocument()
+})
+
+describe('export as image', () => {
+  test('one button downloads the whole playbook as one picture', async () => {
+    const exp = await import('../../src/view/exportImage')
+    const dl = vi.spyOn(exp, 'downloadPlaybookImage').mockResolvedValue()
+    setup()
+    fireEvent.click(screen.getByRole('button', { name: 'Download image' }))
+    expect(dl).toHaveBeenCalledWith(expect.objectContaining({ system: '5-1' }))
+    expect(screen.queryByRole('button', { name: 'Download all rotations' })).toBeNull()
+  })
 })

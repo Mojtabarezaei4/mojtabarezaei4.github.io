@@ -248,6 +248,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .pb-status--overlap { color: #ff6f59; }
 .share-input { width: 100%; font: 500 12px var(--f-mono) !important; color: var(--muted) !important; }
 .coach-side .play-btn { width: 100%; }
+.ghost-btn:disabled { opacity: .5; cursor: wait; }
 @media (max-width: 640px) {
   .coach { padding: 14px 12px 32px; }
   .coach-team input { width: 100%; }

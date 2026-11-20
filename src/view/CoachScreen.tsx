@@ -7,6 +7,7 @@ import { playersAt, rotationLabel } from '../domain/rotation'
 import { ROLE_INFO } from '../domain/systems'
 import { SYSTEM_KEYS, type Spot, type SystemKey, type Zone } from '../domain/types'
 import { emptyPlaybook } from '../domain/playbook'
+import * as exporter from './exportImage'
 import { Ball } from './PlayerScreen'
 
 // Flat top-down edit court: 12 m × 12 m view, net at the top.
@@ -30,6 +31,8 @@ export function CoachScreen({ initial, onChange }: { initial?: Playbook | null; 
   const [rotation, setRotation] = useState(0)
   const [situation, setSituation] = useState<Situation>('receive')
   const [copied, setCopied] = useState(false)
+  const [exporting, setExporting] = useState(false)
+  const runExport = async (fn: () => Promise<void>) => { setExporting(true); try { await fn() } finally { setExporting(false) } }
   const courtRef = useRef<HTMLDivElement>(null)
   const drag = useRef<string | null>(null)
 
@@ -183,6 +186,8 @@ export function CoachScreen({ initial, onChange }: { initial?: Playbook | null; 
             <input className="share-input" readOnly aria-label="Share link" value={link} onFocus={(e) => e.target.select()} />
             <button type="button" className="play-btn" onClick={() => { void navigator.clipboard?.writeText(link); setCopied(true) }}>{copied ? 'Copied ✓' : 'Copy link'}</button>
             <a className="ghost-btn" href={link}>Open player view</a>
+            <button type="button" className="ghost-btn" disabled={exporting} onClick={() => runExport(() => exporter.downloadPlaybookImage(pb))}>Download image</button>
+            <p className="hint">One landscape PNG of the whole playbook: every rotation with Lineup, Serve and Receive, placed like the zones on the court.</p>
           </section>
         </aside>
       </div>
